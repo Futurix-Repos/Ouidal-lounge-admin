@@ -48,3 +48,58 @@ export const dateParser = (date: string) => {
     day,
   }
 }
+export const updateStock = async ({
+  client,
+  items,
+  barman,
+  session,
+}: {
+  client: any
+  items: any[]
+  barman: any
+  session: any
+}) => {
+  for (const item of items) {
+    if (item.special) continue
+
+    const product = await client.db().collection("sellingProducts").findOne(
+      {
+        standId: barman.standId,
+        productId: item.productId,
+      },
+      {session}
+    )
+
+    if (!product) {
+      throw new Error(`${item.name} n'existe pas dans l'entrepôt`)
+    }
+
+    let totalToRestock = item.deStock
+      ? item.qty * item.contenance
+      : item.qty * item.sellingPerUnit.qty
+
+    if (totalToRestock > product.stock) {
+      throw new Error(`${item.name} stock insuffisant`)
+    }
+
+    await client
+      .db()
+      .collection("sellingProducts")
+      .updateOne(
+        {
+          standId: barman.standId,
+          productId: item.productId,
+        },
+        {
+          $inc: {
+            stock: totalToRestock,
+          },
+        },
+        {session}
+      )
+  }
+}
+
+export const printTicket = async () => {
+  await axios.post("")
+}

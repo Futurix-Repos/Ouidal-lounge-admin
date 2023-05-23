@@ -5,8 +5,11 @@ import {useAppSelector} from "@/store/hooks"
 import clsx from "clsx"
 import Loading from "@/components/Loading"
 import Items from "./items"
+import CancelOrder from "../modals/cancel-order"
 export default function OrdersList() {
   const [order, setOrder] = useState({table: "", zone: "", items: []})
+  const [orderToCancel, setOrderToCancel] = useState(null)
+  const [openCancelOrder, setOpenCancelOrder] = useState(false)
   const [open, setOpen] = useState(false)
   const startDate = useAppSelector((state) => state.orders.startDate)
   const endDate = useAppSelector((state) => state.orders.endDate)
@@ -36,6 +39,9 @@ export default function OrdersList() {
   }
   return (
     <div className="px-4 sm:px-6 lg:px-8">
+      {status === "pending" && (
+        <CancelOrder order={orderToCancel} open={openCancelOrder} setOpen={setOpenCancelOrder} />
+      )}
       <Items order={order} setOrder={setOrder} open={open} setOpen={setOpen} />
       <div className="p-6 inline-flex w-72 items-center rounded-md bg-white  text-lg font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white">
         TOTAL: {total.toLocaleString()} FCFA
@@ -163,8 +169,11 @@ export default function OrdersList() {
                   {order.status === "pending" && (
                     <button
                       type="button"
+                      onClick={() => {
+                        setOrderToCancel(order)
+                        setOpenCancelOrder(true)
+                      }}
                       className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                      disabled={order.isCurrent}
                     >
                       Annuler
                     </button>

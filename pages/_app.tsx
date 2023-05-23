@@ -3,8 +3,10 @@ import type {AppProps} from "next/app"
 import {QueryClient, QueryClientProvider} from "react-query"
 import {Provider} from "react-redux"
 import {useSession, SessionProvider} from "next-auth/react"
-import {store} from "../store"
+import {store} from "@/store"
 import Head from "next/head"
+
+
 
 export const queryClient = new QueryClient()
 export default function App({Component, pageProps: {session, ...pageProps}}: AppProps) {

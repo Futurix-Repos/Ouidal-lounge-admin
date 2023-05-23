@@ -9,14 +9,12 @@ import {queryClient} from "@/pages/_app"
 import {useRouter} from "next/router"
 
 export default function CancelOrder({open, setOpen, order}: any) {
-  const router = useRouter()
-  const {isLoading, isError, isSuccess, isIdle, mutate, reset} = useMutation({
+  const {isLoading, isError, isIdle, mutate, reset} = useMutation({
     mutationFn: async (payload: any) => {
-      const {data} = await axios.put("/api/order/cancel", payload)
+      const {data} = await axios.post("/api/order/cancel", payload)
       return data
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["product"])
       reset()
       setOpen(false)
       // router.reload()

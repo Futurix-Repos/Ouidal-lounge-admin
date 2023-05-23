@@ -16,7 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (stand) {
       matchFilter["stand"] = stand
     }
-    if (date) {
+    if (!date) {
+    } else {
       const startDate = new Date(date as string)
       const endDate = new Date(startDate)
       endDate.setUTCDate(startDate.getUTCDate() + 1)
