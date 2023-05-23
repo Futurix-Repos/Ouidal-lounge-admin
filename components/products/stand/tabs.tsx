@@ -31,7 +31,7 @@ function StandSelect() {
   const {data: stands, isLoading} = useQuery("stands", () => fetcher("/api/stands"), {
     onSuccess(stands) {
       if (!standId && stands) {
-        dispatch(setStandId(stands[0].id))
+        dispatch(setStandId(stands[0]?.id))
       }
     },
   })
@@ -64,7 +64,7 @@ function CategorySelect() {
 
   const {data: categories, isLoading} = useQuery("categories", () => fetcher("/api/categories"), {
     onSuccess(categories) {
-      if (categories && !categoryId) dispatch(setStandCategoryId(categories[0].id))
+      if (categories && !categoryId) dispatch(setStandCategoryId(categories[0]?.id))
     },
   })
 

@@ -1,14 +1,14 @@
-import {Fragment, useState} from "react"
-import {Menu, Transition} from "@headlessui/react"
+import {useState} from "react"
+import {Menu} from "@headlessui/react"
 
 import {useQuery} from "react-query"
 import {fetcher} from "@/helpers"
 
 import {useAppDispatch, useAppSelector} from "@/store/hooks"
 import Loading from "@/components/Loading"
-import {MinusCircleIcon, PencilIcon, PlusIcon} from "@heroicons/react/24/outline"
+import {MinusCircleIcon, PlusIcon} from "@heroicons/react/24/outline"
 
-import {setStandProduct, setStandProductId} from "@/store/slices/products"
+import {setStandProductId} from "@/store/slices/products"
 import IncrementStandStock from "@/components/modals/inc-stand-stock"
 import DecrementStandStock from "@/components/modals/dec-stand-stock"
 
@@ -47,7 +47,7 @@ export default function Products() {
           {products?.map((product) => (
             <li key={product.id} className="overflow-hidden rounded-xl border border-gray-200">
               <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                <div className="text-sm font-medium leading-6 text-gray-900">{product.name}</div>
+                <div className="text-sm font-medium leading-6 text-gray-900 first-letter:uppercase">{product.name}</div>
 
                 <Menu as="div" className="relative ml-auto flex space-x-4">
                   <button

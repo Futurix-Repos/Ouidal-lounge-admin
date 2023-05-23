@@ -69,7 +69,7 @@ function CategorySelect() {
   const {data: categories, isLoading} = useQuery("categories", () => fetcher("/api/categories"), {
     onSuccess(categories) {
       if (!categoryId && categories) {
-        dispatch(setWarehouseCategoryId(categories[0].id))
+        dispatch(setWarehouseCategoryId(categories[0]?.id))
       }
     },
   })

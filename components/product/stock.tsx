@@ -54,7 +54,7 @@ export default function ProductStock() {
     {
       onSuccess: (categories) => {
         if (categories && !formik.values.categoryId) {
-          formik.setFieldValue("categoryId", categories?.[0].id)
+          formik.setFieldValue("categoryId", categories?.[0]?.id)
         }
       },
     }
@@ -76,7 +76,7 @@ export default function ProductStock() {
     {
       onSuccess: (pos) => {
         if (pos && !formik.values.stands.length) {
-          formik.setFieldValue("stands", [pos?.[0].id])
+          formik.setFieldValue("stands", [pos?.[0]?.id])
         }
       },
     }

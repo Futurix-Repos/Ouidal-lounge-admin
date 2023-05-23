@@ -4,9 +4,9 @@ import {NumericFormat} from "react-number-format"
 import {useMutation} from "react-query"
 import axios from "axios"
 import {useAppSelector} from "@/store/hooks"
-import {useRouter} from "next/router"
 import {queryClient} from "@/pages/_app"
 import MutationState from "../MutationState"
+
 export default function IncrementWarehouseStock({open, setOpen}) {
   const warehouseId = useAppSelector((state) => state.products.warehouse.warehouseId)
   const categoryId = useAppSelector((state) => state.products.warehouse.categoryId)

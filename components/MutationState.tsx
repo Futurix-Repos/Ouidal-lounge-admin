@@ -26,7 +26,7 @@ export default function MutationState({
         <button onClick={() => mutation.reset()}>Réussie</button>
       ) : null}
       {mutation.isIdle && (
-        <div className="w-full p-2 flex items-center space-x-3 border">
+        <div className="w-full p-2 flex items-center space-x-3 ">
           <button
             type="submit"
             className="rounded-md h-10 w-1/2 bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
