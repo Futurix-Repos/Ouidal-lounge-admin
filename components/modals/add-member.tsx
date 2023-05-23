@@ -22,22 +22,18 @@ export default function AddMember({open, setOpen}: any) {
     initialValues: {
       username: "",
       password: "",
-      role: "",
+      role: "manager",
       stand: "",
     },
     onSubmit: (values) => {
       mutation.mutate(values)
     },
   })
-  const {data: stands} = useQuery("stands", () => fetcher("/api/stands"), {
-    onSuccess: (stands) => {
-      formik.setFieldValue("stand", stands?.[0]?.id)
-    },
-  })
+  const {data: stands} = useQuery("stands", () => fetcher("/api/stands"))
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-[100]" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -152,7 +148,7 @@ export default function AddMember({open, setOpen}: any) {
                       </div>
                     )}
                   </div>
-                  <MutationState mutation={mutation} data={{}} />
+                  <MutationState mutation={mutation} data={{}} close={() => setOpen(false)} />
                 </form>
               </Dialog.Panel>
             </Transition.Child>

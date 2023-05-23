@@ -18,6 +18,11 @@ export default function Tickets() {
   const [total, setTotal] = useState(0)
   const [showTicket, setShowTicket] = useState(false)
 
+  if(!isLoading && tickets.length == 0){
+    return <div className='flex items-center justify-center h-screen '>
+      Pas de tickets Z
+    </div>;
+  }
   return (
     <div className="flex">
       <div className="px-4 sm:px-6 lg:px-8 w-[50vw]">
