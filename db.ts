@@ -2,7 +2,7 @@
 import {MongoClient} from "mongodb"
 ;("use strict")
 
-const uri = String("mongodb://admin:admin@127.0.0.1:27017/ouidah-lounge-beta?authSource=admin")
+const uri = String(process.env.MONGODB_URI)
 const options = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
