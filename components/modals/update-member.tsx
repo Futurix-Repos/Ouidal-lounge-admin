@@ -154,7 +154,14 @@ export default function UpdateMember({open, setOpen}: any) {
                       </div>
                     )}
                   </div>
-                  <MutationState mutation={mutation} data={{}} />
+                  <MutationState
+                    mutation={mutation}
+                    data={{}}
+                    close={() => {
+                      setOpen(false)
+                      mutation.reset()
+                    }}
+                  />
                 </form>
               </Dialog.Panel>
             </Transition.Child>

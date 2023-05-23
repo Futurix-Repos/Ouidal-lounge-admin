@@ -20,6 +20,7 @@ const navigation = [
   {name: "Tables", href: "/tables", icon: RectangleStackIcon},
   {name: "Commandes", href: "/orders", icon: CircleStackIcon},
   {name: "Statistiques ventes", href: "/stats", icon: PresentationChartLineIcon},
+  {name: "Rapports", href: "/tickets", icon: PresentationChartLineIcon},
   {
     name: "Inventaire des produits",
     icon: BuildingLibraryIcon,
