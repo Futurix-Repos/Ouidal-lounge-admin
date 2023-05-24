@@ -24,12 +24,13 @@ export default function AddMember({open, setOpen}: any) {
       password: "",
       role: "manager",
       stand: "",
+      
     },
     onSubmit: (values) => {
       mutation.mutate(values)
     },
   })
-  const {data: stands} = useQuery("stands", () => fetcher("/api/stands"))
+  const {data: stands} = useQuery("stands", () => fetcher("/api/stands"), )
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -115,7 +116,7 @@ export default function AddMember({open, setOpen}: any) {
                           name="role"
                           value={formik.values.role}
                           onChange={formik.handleChange}
-                          className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block  w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         >
                           <option value="manager">Manager</option>
                           <option value="serveur">Serveur</option>
@@ -138,8 +139,9 @@ export default function AddMember({open, setOpen}: any) {
                             name="stand"
                             value={formik.values.stand}
                             onChange={formik.handleChange}
-                            className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                            className="block p-2 first-letter:uppercase w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                           >
+                            <option value="">---</option>
                             {stands?.map((stand) => (
                               <option key={stand.id} value={stand.id}>{stand.name}</option>
                             ))}

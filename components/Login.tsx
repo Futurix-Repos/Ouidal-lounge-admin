@@ -78,7 +78,7 @@ export default function LoginComponent() {
                       )}
                       {loginMutation.isLoading || loginMutation.isSuccess ? (
                         <div className="flex w-full justify-center items-center">
-                          <BarLoader width={100} height={4} color="#db2777" />
+                          <BarLoader width={100} height={4} color="blue" />
                         </div>
                       ) : null}
                       {loginMutation.isIdle && (

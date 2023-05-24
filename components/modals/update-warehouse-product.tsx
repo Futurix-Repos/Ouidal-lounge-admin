@@ -1,8 +1,8 @@
-import {Fragment, useMemo, useState} from "react"
+import {Fragment, useEffect, useMemo, useState} from "react"
 import {Dialog, Transition} from "@headlessui/react"
 import numeral from "numeral"
 import {useAppSelector} from "@/store/hooks"
-import {InputNumber, InputText} from "../Input"
+
 import {useFormik} from "formik"
 import {NumericFormat} from "react-number-format"
 import MutationState from "../MutationState"
@@ -25,7 +25,7 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
     },
   })
   const product = useAppSelector((state) => state.products.warehouse.product)
-
+  
   const formik = useFormik({
     initialValues: {
       name: product.name,
@@ -34,10 +34,11 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
       sellingPerUnitPrice: product.sellingPerUnit.price,
       sellingPerUnitQty: product.sellingPerUnit.qty,
     },
-    onSubmit: (values) => {
-      console.log(values)
-    },
+    onSubmit: async (values) => null,
   })
+  useEffect(() => {
+      formik.setFieldValue('name', product.name)
+  },[product])
   const margin = useMemo(() => {
     return (
       ((formik.values.buyingPrice * formik.values.coef - formik.values.buyingPrice) /
@@ -45,9 +46,18 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
       100
     )
   }, [formik.values.buyingPrice, formik.values.coef])
+
+  const coef = useMemo(() => {
+    return Number(product.sellingPrice) / Number(product.buyingPrice)
+  }, [formik.values.buyingPrice, formik.values.coef])
+
+  const handleNumberChange = (value: any, input: any) => {
+    formik.setFieldValue(input, value.floatValue)
+  }
+
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-[100]" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -71,8 +81,9 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <form
+                  className="space-y-4"
                   onSubmit={(e) => {
                     e.preventDefault()
                     mutation.mutate({
@@ -86,7 +97,7 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                     })
                   }}
                 >
-                  <div className="mt-3 text-center sm:mt-5">
+                  <div className="mt-3 text-center sm:mt-5 space-y-4">
                     <Dialog.Title
                       as="h3"
                       className="text-base font-semibold leading-6 text-gray-900"
@@ -102,9 +113,9 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                       </label>
                       <input
                         type="text"
-                        name="name"
                         id="name"
                         required
+                        
                         value={formik.values.name}
                         onChange={formik.handleChange}
                         className="block p-2  h-10 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -141,20 +152,26 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                         <span className="inline-flex  items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
                           Coef
                         </span>
-                        <input
-                          type="number"
-                          name="coef"
-                          id="coef"
-                          min="1"
-                          value={formik.values.coef}
-                          onChange={formik.handleChange}
-                          className="block  p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        />
+                      
+                  <NumericFormat
+                    displayType="input"
+                    id="coef"
+                    thousandSeparator={true}
+                    value={coef}
+                    allowNegative={false}
+                    onValueChange={(value) => {
+                      handleNumberChange(value, 'coef')
+                    }}
+                    required
+                    className="block p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                         <span className="inline-flex w-1/3 items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
                           {numeral(formik.values.buyingPrice * formik.values.coef).format("0,0")}
                         </span>
                         <span className="inline-flex w-1/3 items-center border  border-gray-300 px-3 text-gray-500 sm:text-sm">
-                          {margin.toFixed(2)}
+                         {numeral(margin).format("0.0")}
+                         
+                         
                         </span>
                       </div>
                     </div>
@@ -191,12 +208,18 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                               Quantité consommation
                             </label>
                             <div className=" w-full">
-                              <input
-                                type="number"
+                              <NumericFormat
+                                displayType="input"
+                                thousandSeparator={true}
+                                allowNegative={false}
+                                onValueChange={(value) => {
+                                  handleNumberChange(value, 'sellingPerUnitQty')
+                                }}
+                                required
+
                                 name="sellingPerUnitQty"
                                 id="sellingPerUnitQty"
                                 value={formik.values.sellingPerUnitQty}
-                                onChange={formik.handleChange}
                                 className="block h-10 p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                               />
                             </div>

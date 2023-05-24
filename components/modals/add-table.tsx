@@ -5,6 +5,7 @@ import {useMutation, useQuery} from "react-query"
 import axios from "axios"
 import MutationState from "../MutationState"
 import {queryClient} from "@/pages/_app"
+
 export default function AddTable({open, setOpen}: any) {
   const [name, setName] = useState("")
   const zoneId = useAppSelector((state) => state.zones.zoneId)
@@ -20,7 +21,7 @@ export default function AddTable({open, setOpen}: any) {
   })
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-[100]" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

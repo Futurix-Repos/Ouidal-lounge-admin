@@ -9,8 +9,10 @@ import {BeatLoader} from "react-spinners"
 import {fetcher} from "@/helpers"
 import Link from "next/link"
 import {ArrowLeftIcon} from "@heroicons/react/20/solid"
+import { useRouter } from "next/router"
 
 export default function ProductStock() {
+  const router = useRouter()
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -21,11 +23,11 @@ export default function ProductStock() {
       coef: 1,
       stands: [],
       contenance: 0,
-      parStock: "",
+      parStock: 0,
       sellingPerUnit: false,
-      sellingPerUnitPrice: "",
-      sellingPerUnitQty: "",
-      quantity: "",
+      sellingPerUnitPrice: 0,
+      sellingPerUnitQty: 0,
+      quantity: 0,
       cookingPlace: "bar",
     },
     onSubmit: (values) => {
@@ -35,6 +37,10 @@ export default function ProductStock() {
       }
       if (!values.buyingPrice) {
         alert("Veuillez insérer un prix!")
+        return
+      }
+      if(values.parStock > values.quantity){
+        alert("Par-stock supérieur à la quantité initiale.")
         return
       }
       const sellingPrice = values.buyingPrice * values.coef
@@ -91,6 +97,7 @@ export default function ProductStock() {
       onSuccess: () => {
         formik.resetForm()
         mutation.reset()
+        router.push('/products/warehouses')
       },
     }
   )
@@ -252,13 +259,16 @@ export default function ProductStock() {
                     <span className="inline-flex  items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
                       Coef
                     </span>
-                    <input
-                      type="number"
-                      name="coef"
+                    <NumericFormat
+                      displayType="input"
                       id="coef"
                       min="1"
                       value={formik.values.coef}
-                      onChange={formik.handleChange}
+                      onValueChange={(value) => {
+                        handleNumberChange(value, "coef")
+                      }}
+                      allowNegative={false}
+                      required
                       className="block  p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     <span className="inline-flex w-1/3 items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
@@ -295,13 +305,16 @@ export default function ProductStock() {
                     Quantité initiale
                   </label>
                   <div className="w-full">
-                    <input
-                      type="number"
-                      name="quantity"
+                    <NumericFormat
+                      displayType="input"
                       id="quantity"
-                      required
                       value={formik.values.quantity}
-                      onChange={formik.handleChange}
+                      onValueChange={(value) => {
+                        handleNumberChange(value, "quantity")
+                      }}
+                      allowNegative={false}
+                      thousandSeparator={true}
+                      required
                       className="block h-10 p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -315,13 +328,17 @@ export default function ProductStock() {
                     Par Stock
                   </label>
                   <div className="w-full ">
-                    <input
-                      type="number"
+                    <NumericFormat
+                      displayType="input"
                       name="parStock"
                       id="parStock"
                       required
+                      max={formik.values.quantity}
+                      thousandSeparator={true}
                       value={formik.values.parStock}
-                      onChange={formik.handleChange}
+                      onValueChange={(value) => {
+                        handleNumberChange(value, 'parStock')
+                      }}
                       className="block h-10 p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -379,7 +396,7 @@ export default function ProductStock() {
                           onChange={formik.handleChange}
                           className="h-full p-2 rounded-md border-0 bg-transparent text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                         >
-                          <option></option>
+                         
                           <option>cl</option>
                           <option>g</option>
                           <option>l</option>
@@ -422,13 +439,15 @@ export default function ProductStock() {
                         Quantité consommation
                       </label>
                       <div className=" w-full">
-                        <input
-                          type="number"
+                        <NumericFormat
+                          displayType={"input"}
                           name="sellingPerUnitQty"
                           id="sellingPerUnitQty"
                           value={formik.values.sellingPerUnitQty}
                           required={formik.values.sellingPerUnit}
-                          onChange={formik.handleChange}
+                          onValueChange={(value) => {
+                            handleNumberChange(value, "sellingPerUnitPrice")
+                          }}
                           className="block h-10 p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>

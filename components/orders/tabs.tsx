@@ -25,7 +25,7 @@ function FilterTab() {
   useEffect(() => {
     let tid = setTimeout(() => {
       dispatch(setDebouncedEndDate(endDate))
-    }, 1000)
+    }, 300)
 
     return () => {
       clearTimeout(tid)
@@ -34,7 +34,7 @@ function FilterTab() {
   useEffect(() => {
     let tid = setTimeout(() => {
       dispatch(setDebouncedStartDate(startDate))
-    }, 1000)
+    }, 300)
 
     return () => {
       clearTimeout(tid)

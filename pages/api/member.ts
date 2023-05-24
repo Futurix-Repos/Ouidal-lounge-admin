@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const client = await clientPromise
       const {username, password, role, stand} = req.body
       const _id = new ObjectId()
-
+      console.log(req.body)
       const user = await client.db().collection("users").findOne({username: username.toLowerCase()})
       if (user) {
         return res.status(400).send({msg: "Utilisateur déjà existant!"})

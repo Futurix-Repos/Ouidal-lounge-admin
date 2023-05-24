@@ -1,32 +1,31 @@
 import {Fragment, useState} from "react"
 import {Dialog, Transition} from "@headlessui/react"
-import {useAppSelector} from "@/store/hooks"
+import {useAppDispatch, useAppSelector} from "@/store/hooks"
 import {useMutation, useQuery} from "react-query"
 import axios from "axios"
 import MutationState from "../MutationState"
 import {queryClient} from "@/pages/_app"
-
+import { setZoneId } from "@/store/slices/zones"
 import {fetcher} from "@/helpers"
-export default function AddZone({open, setOpen}: any) {
+
+
+export default function DeleteZone({open, setOpen}: any) {
   const [name, setName] = useState("")
-  const [zoneId, setZoneId] = useState("")
-  const {isLoading, data: zones} = useQuery("zones", () => fetcher("/api/zones"), {
-    onSuccess(zones) {
-      if (zones && !zoneId) {
-        setZoneId(zones?.[0]?.id)
-      }
-    },
-  })
+  const dispatch = useAppDispatch()
+  const zoneId = useAppSelector(state => state.zones.zoneId)
+  const {isLoading, data: zones} = useQuery("zones", () => fetcher("/api/zones"))
 
   const mutation = useMutation({
     mutationFn: async (data: any) => {
       await axios.delete(`/api/zone?id=${zoneId}`, data)
     },
     onSuccess: () => {
+      dispatch(setZoneId(''))
       queryClient.invalidateQueries(["zones"])
+      queryClient.invalidateQueries(["tables"])
       mutation.reset()
       setOpen(false)
-      setZoneId("")
+    
     },
   })
   return (

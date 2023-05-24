@@ -7,8 +7,8 @@ export default function OrderItems({open, order, setOrder, setOpen}: any) {
   return (
     <div
       className={clsx(
-        open ? "block" : "hidden",
-        "transition z-50 transform bg-white duration-500  border border-black  fixed w-[30rem] "
+        open ? "opacity-100 w-1/3 " : "opacity-0",
+          "transition z-50 transform bg-white duration-500  border border-black  h-[40rem]  mt-10 "
       )}
     >
       <button
@@ -39,7 +39,7 @@ export default function OrderItems({open, order, setOrder, setOpen}: any) {
       </div>
       <ul
         role="list"
-        className="bg-white max-h-[50vh] overflow-y-auto divide-y-1 divide-gray-200 p-2 "
+        className="bg-white max-h-[30rem] overflow-y-auto divide-y-1 divide-gray-200 p-2 "
       >
         {order?.items.map((item: any) => (
           <li key={item.name} className="border relative bg-white py-5 px-4   hover:bg-gray-50">

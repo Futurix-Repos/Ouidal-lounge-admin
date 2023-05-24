@@ -15,6 +15,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(req.body)
     const client = await clientPromise
     const stockProduct = await client.db().collection("stockProducts").findOne({id: productId})
+    // Check if product exists with the same name
+    const product = await client.db().collection("stockProducts").findOne({
+      name: name.toLowerCase(),
+    })
+    console.log(product)
+    if (product?.id !== productId) {
+      return res.status(400).send({
+        msg: "Produit déjà existant!",
+      })
+    }
+
 
     const standProduct = await client
       .db()

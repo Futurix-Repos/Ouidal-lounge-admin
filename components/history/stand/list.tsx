@@ -24,9 +24,9 @@ export default function history() {
 
   return (
     <div className="">
-      {isLoading ? <Loading /> : null}
+      {isLoading ? <div className="h-[30vh] flex items-center justify-center "> <Loading /> </div>: null}
       {!isLoading && histories?.length === 0 && (
-        <div className="flex w-full items-center justify-center h-[50vh]">
+        <div className="flex w-full items-center justify-centerh-[30vh]">
           <p className="text-gray-400">Aucun produit trouvé</p>
         </div>
       )}

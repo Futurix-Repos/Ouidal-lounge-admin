@@ -40,7 +40,9 @@ export default function Products() {
 
 
             {isLoading ? (
-                <Loading/>
+               <div className="flex h-screen w-full items-center justify-center">
+               <Loading />
+             </div>
             ) : (
                 <ul role="list" className="grid mt-8 grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 p-4">
                     {products?.map((product) => (
@@ -105,13 +107,21 @@ export default function Products() {
                                         </div>
                                     </dd>
                                 </div>
+                               {product.sellingPerUnit.isTrue ? <div className="flex justify-between gap-x-4 py-3">
+                                    <dt className="text-gray-500">Prix Conso</dt>
+                                    <dd className="flex items-start gap-x-2">
+                                        <div className="font-medium text-gray-900">
+                                            {product.sellingPerUnit.price.toLocaleString()} FCFA
+                                        </div>
+                                    </dd>
+                                </div> : <p className="mt-4 p-2">Non vendu à la consommation.</p>}
                             </dl>
                         </li>
                     ))}
                 </ul>
             )}
             {!isLoading && products?.length === 0 && (
-                <div className="flex w-full items-center justify-center">
+                <div className="flex w-full items-center justify-center h-[30vh]">
                     <p className="text-gray-400">Aucun produit trouvé</p>
                 </div>
             )}

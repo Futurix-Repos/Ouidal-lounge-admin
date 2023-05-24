@@ -1,4 +1,4 @@
-import {EnvelopeIcon, PhoneIcon, TrashIcon} from "@heroicons/react/20/solid"
+import {TrashIcon} from "@heroicons/react/20/solid"
 import {useState} from "react"
 import clsx from "clsx"
 import {useMutation, useQuery} from "react-query"
@@ -17,7 +17,7 @@ function Table({table}: any) {
       await axios.delete(`/api/table?id=${table.id}`)
     },
     onSuccess() {
-      queryClient.invalidateQueries(["tables", zoneId])
+      queryClient.invalidateQueries(["tables"])
       mutation.reset()
     },
   })
@@ -49,6 +49,7 @@ function Table({table}: any) {
 export default function Tables() {
   const [openAddTable, setOpenAddTable] = useState(false)
   const zoneId = useAppSelector((state) => state.zones.zoneId)
+  
   const {isLoading, data: tables} = useQuery<any>(["tables", zoneId], () =>
     fetcher(`/api/tables?zoneId=${zoneId}`)
   )

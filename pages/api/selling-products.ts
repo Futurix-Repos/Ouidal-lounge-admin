@@ -28,6 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         $or: [{deStock: true}, {special: true}],
       })
       .toArray()
+      console.log(req.query)
     const map = new Map()
     products.forEach((product) => {
       if (!map.has(product.name)) {

@@ -11,6 +11,7 @@ import {MinusCircleIcon, PlusIcon} from "@heroicons/react/24/outline"
 import {setStandProductId} from "@/store/slices/products"
 import IncrementStandStock from "@/components/modals/inc-stand-stock"
 import DecrementStandStock from "@/components/modals/dec-stand-stock"
+import clsx from "clsx"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -38,14 +39,18 @@ export default function Products() {
       <IncrementStandStock open={openIncrement} setOpen={setOpenIncrement} />
       <DecrementStandStock open={openDecrement} setOpen={setOpenDecrement} />
       {isLoading ? (
+        <div className="flex h-screen w-full items-center justify-center">
         <Loading />
+      </div>
       ) : (
         <ul
           role="list"
           className="grid p-4 mt-8 grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"
         >
           {products?.map((product) => (
-            <li key={product.id} className="overflow-hidden rounded-xl border border-gray-200">
+            <li key={product.id} className={
+              clsx("overflow-hidden rounded-xl border border-gray-200", product.special && "bg-yellow-50")
+            }>
               <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
                 <div className="text-sm font-medium leading-6 text-gray-900 first-letter:uppercase">{product.name}</div>
 
@@ -75,12 +80,12 @@ export default function Products() {
                 </Menu>
               </div>
               <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
-                <div className="flex justify-between gap-x-4 py-3">
+               {!product.special ? <div className="flex justify-between gap-x-4 py-3">
                   <dt className="text-gray-500">Stock</dt>
                   <dd className="text-gray-700">
                     {(product.stock / product.contenance).toFixed(2)}
                   </dd>
-                </div>
+                </div> : null}
 
                 <div className="flex justify-between gap-x-4 py-3">
                   <dt className="text-gray-500">Prix de vente</dt>
@@ -118,7 +123,7 @@ export default function Products() {
         </ul>
       )}
       {!isLoading && products?.length === 0 && (
-        <div className="flex w-full items-center justify-center">
+        <div className="flex w-full items-center justify-center h-[30vh]">
           <p className="text-gray-400">Aucun produit trouvé</p>
         </div>
       )}

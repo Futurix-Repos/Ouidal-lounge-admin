@@ -235,14 +235,19 @@ export default function CreateProduct() {
                   <span className="inline-flex  items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
                     Coef
                   </span>
-                  <input
-                    type="number"
-                    name="coef"
+
+                  <NumericFormat
+                    displayType="input"
                     id="coef"
-                    min="1"
+                    
+                    thousandSeparator={true}
                     value={formik.values.coef}
-                    onChange={formik.handleChange}
-                    className="block  p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    allowNegative={false}
+                    onValueChange={(value) => {
+                      handleNumberChange(value, 'coef')
+                    }}
+                    required
+                    className="block p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   <span className="inline-flex w-1/3 items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
                     {numeral((formik.values.buyingPrice * formik.values.coef).toFixed(2)).format(

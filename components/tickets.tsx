@@ -67,7 +67,7 @@ export default function Tickets() {
                     >
                       <circle cx="3" cy="3" r="3" />
                     </svg>
-                    <p>{ticket.total.toLocaleString("fr-Fr")}</p>
+                    <p>{ticket.total.toLocaleString("en-US")}</p>
                   </td>
                   <td
                     className={classNames(
@@ -75,7 +75,7 @@ export default function Tickets() {
                       "hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {new Date(ticket.startDate).toLocaleString("fr-FR")}
+                    {new Date(ticket.startDate).toLocaleString("en-US")}
                   </td>
                   <td
                     className={classNames(

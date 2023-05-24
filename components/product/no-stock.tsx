@@ -1,6 +1,7 @@
 // Creation a product not linked to stock
 
 // Creation of a product linked to the stock
+import {useRouter} from "next/router"
 import React from "react"
 import {useFormik} from "formik"
 import numeral from "numeral"
@@ -13,6 +14,7 @@ import Link from "next/link"
 import {ArrowLeftIcon} from "@heroicons/react/20/solid"
 
 export default function ProductNoStock() {
+  const router = useRouter()
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -71,6 +73,7 @@ export default function ProductNoStock() {
       onSuccess: () => {
         formik.resetForm()
         mutation.reset()
+        router.push("/products/stands")
       },
     }
   )
@@ -204,13 +207,16 @@ export default function ProductNoStock() {
                     <span className="inline-flex  items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
                       Coef
                     </span>
-                    <input
-                      type="number"
+                    <NumericFormat
+                      displayType={"input"}
+                      onValueChange={(value) => {
+                        handleNumberChange(value, "coef")
+                      }}
                       name="coef"
                       id="coef"
                       min="1"
                       value={formik.values.coef}
-                      onChange={formik.handleChange}
+                      required
                       className="block  p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     <span className="inline-flex w-1/3 items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">

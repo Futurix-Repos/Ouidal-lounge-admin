@@ -25,18 +25,10 @@ function SearchBar() {
   )
 }
 
-function StandSelect() {
+function StandSelect({stands}) {
+
   const dispatch = useAppDispatch()
   const standId = useAppSelector((state) => state.products.stand.standId)
-  const {data: stands, isLoading} = useQuery("stands", () => fetcher("/api/stands"), {
-    onSuccess(stands) {
-      if (!standId && stands) {
-        dispatch(setStandId(stands[0]?.id))
-      }
-    },
-  })
-
-  if (isLoading) return <Loading />
 
   return (
     <div className="w-1/3">
@@ -58,17 +50,10 @@ function StandSelect() {
   )
 }
 
-function CategorySelect() {
+function CategorySelect({categories}) {
+  
   const dispatch = useAppDispatch()
   const categoryId = useAppSelector((state) => state.products.stand.categoryId)
-
-  const {data: categories, isLoading} = useQuery("categories", () => fetcher("/api/categories"), {
-    onSuccess(categories) {
-      if (categories && !categoryId) dispatch(setStandCategoryId(categories[0]?.id))
-    },
-  })
-
-  if (isLoading) return <Loading />
 
   return (
     <div className="w-1/3">
@@ -90,11 +75,33 @@ function CategorySelect() {
   )
 }
 export default function FilterTab() {
+  const dispatch = useAppDispatch()
+  const standId = useAppSelector((state) => state.products.stand.standId)
+  const categoryId = useAppSelector((state) => state.products.stand.categoryId)
+  const {data: stands, isLoading:standsIsLoading} = useQuery("stands", () => fetcher("/api/stands"), {
+    onSuccess(stands) {
+      if (!standId && stands) {
+        dispatch(setStandId(stands[0]?.id))
+      }
+    },
+  })
+  
+  const {data: categories, isLoading:categoriesIsLoading} = useQuery("categories", () => fetcher("/api/categories"), {
+    onSuccess(categories) {
+      if (categories && !categoryId) dispatch(setStandCategoryId(categories[0]?.id))
+    },
+  })
+
+
+  if (standsIsLoading || categoriesIsLoading) return <Loading />
+
   return (
     <div className="bg-gray-400 shadow-md rounded-sm w-full sticky top-0 flex items-center justify-center space-x-4 p-2">
       <SearchBar />
-      <StandSelect />
-      <CategorySelect />
+      <StandSelect stands={stands}/>
+      <CategorySelect 
+        categories={categories}
+      />
     </div>
   )
 }

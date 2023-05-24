@@ -36,14 +36,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "DELETE") {
     try {
       const {id} = req.query
-
+      console.log(id)
       const client = await clientPromise
       const session = client.startSession()
       await session.withTransaction(
         async () => {
           try {
             await client.db().collection("zones").deleteOne({id}, {session})
-            await client.db().collection("tables").deleteMany({zoneId: id})
+            await client.db().collection("tables").deleteMany({zoneId: id},{session})
           } catch (error: any) {
             console.log({error})
             throw new error()
