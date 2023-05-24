@@ -10,7 +10,7 @@ import MutationState from "../MutationState"
 export default function IncrementStandStock({open, setOpen}) {
   const productId = useAppSelector((state) => state.products.stand.productId)
   const standId = useAppSelector((state) => state.products.stand.standId)
-  console.log("standId", standId)
+  
   const categoryId = useAppSelector((state) => state.products.stand.categoryId)
   const productName = useAppSelector((state) => state.products.stand.productName)
   const [qty, setQty] = useState(0)
