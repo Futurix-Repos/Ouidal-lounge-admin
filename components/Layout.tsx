@@ -118,8 +118,8 @@ export default function Layout({children}: any) {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-[20rem] lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="border flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white">
-            <div className="flex mt-1 rounded shadow items-center justify-center shrink-0 ">
-              <Logo w={32} h={32} />
+            <div className="flex mt-1 rounded shadow items-center justify-center shrink-0 border">
+              <Logo w={16} h={16} />
             </div>
             <nav className=" flex-col px-6">
               <ul role="list" className="-mx-2 pt-2 space-y-1 overflow-y-auto">

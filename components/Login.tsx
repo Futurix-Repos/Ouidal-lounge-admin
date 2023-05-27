@@ -26,8 +26,8 @@ export default function LoginComponent() {
   return (
     <>
       <div className="flex bg-slate-100 min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex items-center justify-center">
-          <Logo w={52} h={52} />
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex items-center justify-center border">
+          <Logo w={32} h={32} />
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">

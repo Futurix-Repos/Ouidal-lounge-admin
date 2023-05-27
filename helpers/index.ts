@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const printServeurUrl = "http://localhost:8000";
 export const fetcher = async (url: string) => {
   const res = await axios.post(url);
   return res.data;
@@ -17,8 +17,7 @@ export const updateStock = async ({
   session: any;
 }) => {
   for (const item of items) {
-    if (item.special) continue;
-    console.log(item);
+    if (item.special) continue
     const product = await client.db().collection("sellingProducts").findOne(
       {
         productId: item.productId,
@@ -52,8 +51,9 @@ export const updateStock = async ({
   }
 };
 
-export const printTicket = async () => {
-  await axios.post("");
+export const printTicket = async (data) => {
+
+  await axios.post(`${printServeurUrl}/print-zTicket`, data);
 };
 
 export function translateStatusToFrench(status) {
