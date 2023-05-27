@@ -49,7 +49,7 @@ export default function UpdateWarehouseProduct({ open, setOpen }: any) {
       sellingPerUnitPrice: product.sellingPerUnit.price,
       sellingPerUnitQty: product.sellingPerUnit.qty,
     },
-    onSubmit: async (values) => null,
+    onSubmit: async () => null,
   });
   useEffect(() => {
     formik.setFieldValue("name", product.name);
