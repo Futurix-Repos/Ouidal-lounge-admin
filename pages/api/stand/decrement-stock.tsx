@@ -1,29 +1,40 @@
 // Nextjs handler
-import {ObjectId} from "mongodb"
-import clientPromise from "@/db"
-import {NextApiRequest, NextApiResponse} from "next"
+import clientPromise from "@/db";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
-    const client = await clientPromise
-    const {productId, qty, standId, categoryId, reason, keep} = req.body
-    const session = client.startSession()
+    const client = await clientPromise;
+    const { productId, qty, standId, reason, keep } = req.body;
+    const session = client.startSession();
 
     await session.withTransaction(async () => {
       try {
-        const sellingProduct = await client.db().collection("sellingProducts").findOne({
-          productId,
-          standId,
-          deStock: true,
-        })
-        const stockProduct = await client.db().collection("stockProducts").findOne({
-          id: productId,
-        })
-        const standProduct = await client.db().collection("sellingProducts").findOne({
-          productId,
-        })
+        const sellingProduct = await client
+          .db()
+          .collection("sellingProducts")
+          .findOne({
+            productId,
+            standId,
+            deStock: true,
+          });
+        const stockProduct = await client
+          .db()
+          .collection("stockProducts")
+          .findOne({
+            id: productId,
+          });
+        const standProduct = await client
+          .db()
+          .collection("sellingProducts")
+          .findOne({
+            productId,
+          });
         if (sellingProduct?.stock < Number(qty) * sellingProduct?.contenance) {
-          throw new Error("Stock insuffisant")
+          throw new Error("Stock insuffisant");
         }
         if (keep) {
           await client
@@ -41,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               {
                 session,
               }
-            )
+            );
         }
 
         await client
@@ -61,8 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             {
               session,
             }
-          )
-        console.log({standProduct})
+          );
         await client
           .db()
           .collection("stockMovements")
@@ -81,7 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             hour: `${new Date().getHours()}`,
             minute: `${new Date().getMinutes()}`,
             createdAt: new Date(),
-          })
+          });
         await client
           .db()
           .collection("standMovements")
@@ -101,19 +111,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               minute: `${new Date().getMinutes()}`,
               createdAt: new Date(),
             },
-            {session}
-          )
+            { session }
+          );
       } catch (error: any) {
-        throw error
+        throw error;
       }
-    })
+    });
     res.send({
       msg: "ok",
-    })
+    });
   } catch (error: any) {
-    console.error(error)
+    console.error(error);
     res.status(500).send({
       msg: error.message,
-    })
+    });
   }
 }

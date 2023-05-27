@@ -7,9 +7,8 @@ import type {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const client = await clientPromise
-    const {warehouseId, categoryId, productName} = req.query
-    console.log(req.query)
+    const client = await clientPromise;
+    const { warehouseId, categoryId, productName } = req.query;
     const products = await client
       .db()
       .collection("stockProducts")
@@ -27,8 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           $options: "i",
         },
       })
-      .toArray()
-    res.send(products)
+      .toArray();
+
+    res.send(products);
   } catch (error: any) {
     console.error(error)
     res.status(500).send({msg: error.message})

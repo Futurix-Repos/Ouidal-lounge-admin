@@ -111,10 +111,10 @@ function TypeSelect() {
         className=" p-2 border block w-full rounded-md h-12 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
       >
         <option value="reception">Réception</option>
-        <option value="decrement">Retour</option>
+        <option value="decrement">Déstockage</option>
       </select>
     </div>
-  )
+  );
 }
 
 function DateFilter() {

@@ -28,15 +28,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         $or: [{deStock: true}, {special: true}],
       })
       .toArray()
-      console.log(req.query)
     const map = new Map()
     products.forEach((product) => {
-      if (!map.has(product.name)) {
-        map.set(product.name, product)
+      if (product.stock) {
+        map.set(product.name, product);
       } else {
-        map.set(product.name, {...product, name: product.name + " Conso"})
+        map.set(product.name, { ...product, name: product.name + " Conso" });
       }
-    })
+    });
 
     products = Array.from(map.values())
     res.send(products)

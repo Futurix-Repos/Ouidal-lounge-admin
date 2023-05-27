@@ -1,18 +1,18 @@
 // Creation of a product linked to the stock
-import React from "react"
-import {useFormik} from "formik"
-import numeral from "numeral"
-import {NumericFormat} from "react-number-format"
-import {useMutation, useQuery} from "react-query"
-import axios from "axios"
-import {BeatLoader} from "react-spinners"
-import {fetcher} from "@/helpers"
-import Link from "next/link"
-import {ArrowLeftIcon} from "@heroicons/react/20/solid"
-import { useRouter } from "next/router"
+import React from "react";
+import {useFormik} from "formik";
+import numeral from "numeral";
+import {NumericFormat} from "react-number-format";
+import {useMutation, useQuery} from "react-query";
+import axios from "axios";
+import {BeatLoader} from "react-spinners";
+import {fetcher} from "@/helpers";
+import Link from "next/link";
+import {ArrowLeftIcon} from "@heroicons/react/20/solid";
+import {useRouter} from "next/router";
 
 export default function ProductStock() {
-  const router = useRouter()
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -32,79 +32,79 @@ export default function ProductStock() {
     },
     onSubmit: (values) => {
       if (values.stands.length === 0) {
-        alert("Veuillez selectionner au moins un point de vente.")
-        return
+        alert("Veuillez selectionner au moins un point de vente.");
+        return;
       }
       if (!values.buyingPrice) {
-        alert("Veuillez insérer un prix!")
-        return
+        alert("Veuillez insérer un prix!");
+        return;
       }
-      if(values.parStock > values.quantity){
-        alert("Par-stock supérieur à la quantité initiale.")
-        return
+      if (values.parStock > values.quantity) {
+        alert("Par-stock supérieur à la quantité initiale.");
+        return;
       }
-      const sellingPrice = values.buyingPrice * values.coef
-      const margin = sellingPrice - values.buyingPrice
-      const marginPercent = (margin / values.buyingPrice) * 100
+      const sellingPrice = values.buyingPrice * values.coef;
+      const margin = sellingPrice - values.buyingPrice;
+      const marginPercent = (margin / values.buyingPrice) * 100;
       const payload = {
         ...values,
         sellingPrice,
         margin: marginPercent,
-      }
-      mutation.mutate(payload)
+      };
+      mutation.mutate(payload);
     },
-  })
-  const {data: categories, isLoading: categoriesIsLoading} = useQuery(
+  });
+  const { data: categories, isLoading: categoriesIsLoading } = useQuery(
     "categories",
     () => fetcher("/api/categories"),
     {
       onSuccess: (categories) => {
         if (categories && !formik.values.categoryId) {
-          formik.setFieldValue("categoryId", categories?.[0]?.id)
+          formik.setFieldValue("categoryId", categories?.[0]?.id);
         }
       },
     }
-  )
-  const {data: warehouses, isLoading: warehousesIsLoading} = useQuery(
+  );
+  const { data: warehouses, isLoading: warehousesIsLoading } = useQuery(
     "warehouses",
     () => fetcher("/api/warehouses"),
     {
       onSuccess: (warehouses) => {
         if (warehouses && !formik.values.warehouseId) {
-          formik.setFieldValue("warehouseId", warehouses?.[0]?.id)
+          formik.setFieldValue("warehouseId", warehouses?.[0]?.id);
         }
       },
     }
-  )
-  const {data: stands, isLoading: standsIsLoading} = useQuery(
+  );
+  const { data: stands, isLoading: standsIsLoading } = useQuery(
     "stands",
     () => fetcher("/api/stands"),
     {
       onSuccess: (pos) => {
         if (pos && !formik.values.stands.length) {
-          formik.setFieldValue("stands", [pos?.[0]?.id])
+          formik.setFieldValue("stands", [pos?.[0]?.id]);
         }
       },
     }
-  )
+  );
   const mutation = useMutation<any, any, any>(
     "createProduct",
     async (payload: any) => {
-      const res = await axios.post("/api/stock/product", payload)
-      return res.data
+      const res = await axios.post("/api/stock/product", payload);
+      return res.data;
     },
     {
       onSuccess: () => {
-        formik.resetForm()
-        mutation.reset()
-        router.push('/products/warehouses')
+        formik.resetForm();
+        mutation.reset();
+        router.push("/products/warehouses");
       },
     }
-  )
+  );
 
   const handleNumberChange = (value: any, input: any) => {
-    formik.setFieldValue(input, value.floatValue)
-  }
+    formik.setFieldValue(input, value.floatValue);
+  };
   return (
     <>
       <Link
@@ -118,7 +118,7 @@ export default function ProductStock() {
         <div>
           <div className="mt-3 text-center ">
             <h1 className="text-base font-semibold leading-6 text-gray-900 uppercase">
-              Enrégistrement d'un nouveau produit type
+              Enrégistrement d&apos;un nouveau produit type
             </h1>
             <div className="mt-2 grid grid-cols-6 gap-4">
               <section className="shadow-md rounded-sm col-span-full grid grid-cols-6 gap-y-4 gap-x-4 border p-4">
@@ -232,14 +232,14 @@ export default function ProductStock() {
                     htmlFor="buyingPrice"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Prix d'achât
+                    Prix d&apos;achât
                   </label>
                   <NumericFormat
                     displayType={"input"}
                     value={formik.values.buyingPrice}
                     thousandSeparator={true}
                     onValueChange={(value) => {
-                      handleNumberChange(value, "buyingPrice")
+                      handleNumberChange(value, "buyingPrice");
                     }}
                     allowNegative={false}
                     required
@@ -265,16 +265,18 @@ export default function ProductStock() {
                       min="1"
                       value={formik.values.coef}
                       onValueChange={(value) => {
-                        handleNumberChange(value, "coef")
+                        handleNumberChange(value, "coef");
                       }}
                       allowNegative={false}
                       required
                       className="block  p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     <span className="inline-flex w-1/3 items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
-                      {numeral((formik.values.buyingPrice * formik.values.coef).toFixed(2)).format(
-                        "0,0"
-                      )}
+                      {numeral(
+                        (
+                          formik.values.buyingPrice * formik.values.coef
+                        ).toFixed(2)
+                      ).format("0,0")}
                     </span>
                     <span className="inline-flex w-1/3 items-center border  border-gray-300 px-3 text-gray-500 sm:text-sm">
                       {numeral(
@@ -310,7 +312,7 @@ export default function ProductStock() {
                       id="quantity"
                       value={formik.values.quantity}
                       onValueChange={(value) => {
-                        handleNumberChange(value, "quantity")
+                        handleNumberChange(value, "quantity");
                       }}
                       allowNegative={false}
                       thousandSeparator={true}
@@ -337,7 +339,7 @@ export default function ProductStock() {
                       thousandSeparator={true}
                       value={formik.values.parStock}
                       onValueChange={(value) => {
-                        handleNumberChange(value, 'parStock')
+                        handleNumberChange(value, "parStock");
                       }}
                       className="block h-10 p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -357,7 +359,10 @@ export default function ProductStock() {
                   />
                 </div>
                 <div className="ml-3 text-sm leading-6">
-                  <label htmlFor="comments" className="font-medium text-gray-900">
+                  <label
+                    htmlFor="comments"
+                    className="font-medium text-gray-900"
+                  >
                     Vente à la consommation
                   </label>
                 </div>
@@ -383,7 +388,7 @@ export default function ProductStock() {
                         value={formik.values.contenance}
                         thousandSeparator={true}
                         onValueChange={(value) => {
-                          handleNumberChange(value, "contenance")
+                          handleNumberChange(value, "contenance");
                         }}
                         allowNegative={false}
                         className="p-2 block  h-10 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -396,7 +401,6 @@ export default function ProductStock() {
                           onChange={formik.handleChange}
                           className="h-full p-2 rounded-md border-0 bg-transparent text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                         >
-                         
                           <option>cl</option>
                           <option>g</option>
                           <option>l</option>
@@ -421,7 +425,7 @@ export default function ProductStock() {
                           value={formik.values.sellingPerUnitPrice}
                           thousandSeparator={true}
                           onValueChange={(value) => {
-                            handleNumberChange(value, "sellingPerUnitPrice")
+                            handleNumberChange(value, "sellingPerUnitPrice");
                           }}
                           allowNegative={false}
                           className="p-2 block  h-10 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -446,7 +450,7 @@ export default function ProductStock() {
                           value={formik.values.sellingPerUnitQty}
                           required={formik.values.sellingPerUnit}
                           onValueChange={(value) => {
-                            handleNumberChange(value, "sellingPerUnitPrice")
+                            handleNumberChange(value, "sellingPerUnitQty");
                           }}
                           className="block h-10 p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
@@ -468,7 +472,10 @@ export default function ProductStock() {
                   </label>
                   <div className="border w-full divide-y divide-gray-200 border-b border-t border-gray-200">
                     {stands.map((stand, standIdx) => (
-                      <div key={standIdx} className="relative flex items-start justify-between p-2">
+                      <div
+                        key={standIdx}
+                        className="relative flex items-start justify-between p-2"
+                      >
                         <div className=" text-sm leading-6">
                           <label
                             htmlFor={`stand-${stand.id}`}
@@ -486,16 +493,22 @@ export default function ProductStock() {
                             checked={formik.values.stands.includes(stand.id)}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                const standIsAlreadyAdded = formik.values.stands.find(
-                                  (s) => s === stand.id
-                                )
-                                if (standIsAlreadyAdded) return
-                                formik.setFieldValue("stands", [...formik.values.stands, stand.id])
+                                const standIsAlreadyAdded =
+                                  formik.values.stands.find(
+                                    (s) => s === stand.id
+                                  );
+                                if (standIsAlreadyAdded) return;
+                                formik.setFieldValue("stands", [
+                                  ...formik.values.stands,
+                                  stand.id,
+                                ]);
                               } else {
                                 formik.setFieldValue(
                                   "stands",
-                                  formik.values.stands.filter((s) => s !== stand.id)
-                                )
+                                  formik.values.stands.filter(
+                                    (s) => s !== stand.id
+                                  )
+                                );
                               }
                             }}
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
@@ -529,11 +542,13 @@ export default function ProductStock() {
               >
                 Cliquer pour réessayer
               </button>
-              <p className="p-2">Une erreur est survenue {mutation.error?.response?.data?.msg}</p>
+              <p className="p-2">
+                Une erreur est survenue {mutation.error?.response?.data?.msg}
+              </p>
             </div>
           )}
         </div>
       </form>
     </>
-  )
+  );
 }

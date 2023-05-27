@@ -1,13 +1,11 @@
 import { useQuery } from "react-query";
-import { fetcher } from "@/helpers";
+import { fetcher, translateStatusToFrench } from "@/helpers";
 import { useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 import clsx from "clsx";
 import Loading from "@/components/Loading";
 import Items from "./items";
 import CancelOrder from "../modals/cancel-order";
-import OrdersFilter from "@/components/modals/orders-filter";
-import { toggleOrderFilter } from "@/store/slices/orders";
 
 export default function OrdersList() {
   const [currentOrder, setCurrentOrder] = useState({
@@ -174,7 +172,7 @@ export default function OrdersList() {
                       "hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {order.status}
+                    {translateStatusToFrench(order.status)}
                   </td>
                   <td
                     className={clsx(

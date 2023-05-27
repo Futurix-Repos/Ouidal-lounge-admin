@@ -1,32 +1,35 @@
-import {Fragment, useState} from "react"
+import { useQuery } from "react-query";
+import { fetcher } from "@/helpers";
 
-import {useQuery} from "react-query"
-import {fetcher} from "@/helpers"
+import { useAppSelector } from "@/store/hooks";
+import Loading from "@/components/Loading";
 
-import {useAppDispatch, useAppSelector} from "@/store/hooks"
-import Loading from "@/components/Loading"
+export default function History() {
+  const itemName = useAppSelector((state) => state.history.stand.productName);
+  const standId = useAppSelector((state) => state.history.stand.standId);
+  const categoryId = useAppSelector((state) => state.history.stand.categoryId);
+  const type = useAppSelector((state) => state.history.stand.type);
 
-export default function history() {
-  const itemName = useAppSelector((state) => state.history.stand.productName)
-  const standId = useAppSelector((state) => state.history.stand.standId)
-  const categoryId = useAppSelector((state) => state.history.stand.categoryId)
-  const type = useAppSelector((state) => state.history.stand.type)
+  const date = useAppSelector((state) => state.history.stand.date);
 
-  const date = useAppSelector((state) => state.history.stand.date)
-
-  const {isLoading, data: histories} = useQuery<any>(
+  const { isLoading, data: histories } = useQuery<any>(
     ["stock-history", standId, categoryId, itemName, type, date],
     () =>
       fetcher(
         `/api/history/stands?standId=${standId}&categoryId=${categoryId}&itemName=${itemName}&type=${type}&date=${date}`
       )
-  )
+  );
 
   return (
     <div className="">
-      {isLoading ? <div className="h-[30vh] flex items-center justify-center "> <Loading /> </div>: null}
+      {isLoading ? (
+        <div className="h-[30vh] flex items-center justify-center ">
+          {" "}
+          <Loading />{" "}
+        </div>
+      ) : null}
       {!isLoading && histories?.length === 0 && (
-        <div className="flex w-full items-center justify-centerh-[30vh]">
+        <div className="flex w-full items-center justify-center h-[30vh]">
           <p className="text-gray-400">Aucun produit trouvé</p>
         </div>
       )}
@@ -60,6 +63,7 @@ export default function history() {
                   >
                     Motif
                   </th>
+
                   <th
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -87,6 +91,7 @@ export default function history() {
                     <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 lg:table-cell">
                       {history?.reason ? history.reason : "N/A"}
                     </td>
+
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {new Date(history.createdAt).toLocaleString()}
                     </td>
@@ -98,5 +103,5 @@ export default function history() {
         </div>
       )}
     </div>
-  )
+  );
 }

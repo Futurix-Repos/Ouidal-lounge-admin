@@ -1,31 +1,46 @@
-import {Fragment, useEffect, useMemo, useState} from "react"
-import {Dialog, Transition} from "@headlessui/react"
-import numeral from "numeral"
-import {useAppSelector} from "@/store/hooks"
+import { Fragment, useEffect, useMemo } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import numeral from "numeral";
+import { useAppSelector } from "@/store/hooks";
 
-import {useFormik} from "formik"
-import {NumericFormat} from "react-number-format"
-import MutationState from "../MutationState"
-import {useMutation} from "react-query"
-import axios from "axios"
-import {queryClient} from "@/pages/_app"
-export default function UpdateWarehouseProduct({open, setOpen}: any) {
-  const warehouseId = useAppSelector((state) => state.products.warehouse.warehouseId)
-  const categoryId = useAppSelector((state) => state.products.warehouse.categoryId)
-  const productName = useAppSelector((state) => state.products.warehouse.productName)
+import { useFormik } from "formik";
+import { NumericFormat } from "react-number-format";
+import MutationState from "../MutationState";
+import { useMutation } from "react-query";
+import axios from "axios";
+import { queryClient } from "@/pages/_app";
+
+export default function UpdateWarehouseProduct({ open, setOpen }: any) {
+  const warehouseId = useAppSelector(
+    (state) => state.products.warehouse.warehouseId
+  );
+  const categoryId = useAppSelector(
+    (state) => state.products.warehouse.categoryId
+  );
+  const productName = useAppSelector(
+    (state) => state.products.warehouse.productName
+  );
   const mutation = useMutation({
     mutationFn: async (data: any) => {
-      const res = await axios.put("/api/product/update-warehouse-product", data)
-      return res.data
+      const res = await axios.put(
+        "/api/product/update-warehouse-product",
+        data
+      );
+      return res.data;
     },
     onSuccess() {
-      queryClient.invalidateQueries(["stock-products", warehouseId, categoryId, productName])
-      mutation.reset()
-      setOpen(false)
+      queryClient.invalidateQueries([
+        "stock-products",
+        warehouseId,
+        categoryId,
+        productName,
+      ]);
+      mutation.reset();
+      setOpen(false);
     },
-  })
-  const product = useAppSelector((state) => state.products.warehouse.product)
-  
+  });
+  const product = useAppSelector((state) => state.products.warehouse.product);
+
   const formik = useFormik({
     initialValues: {
       name: product.name,
@@ -35,25 +50,29 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
       sellingPerUnitQty: product.sellingPerUnit.qty,
     },
     onSubmit: async (values) => null,
-  })
+  });
   useEffect(() => {
-      formik.setFieldValue('name', product.name)
-  },[product])
+    formik.setFieldValue("name", product.name);
+    formik.setFieldValue("buyingPrice", product.buyingPrice);
+    formik.setFieldValue("sellingPerUnitPrice", product.sellingPerUnit.price);
+    formik.setFieldValue("sellingPerUnitQty", product.sellingPerUnit.qty);
+  }, [product]);
   const margin = useMemo(() => {
     return (
-      ((formik.values.buyingPrice * formik.values.coef - formik.values.buyingPrice) /
+      ((formik.values.buyingPrice * formik.values.coef -
+        formik.values.buyingPrice) /
         formik.values.buyingPrice) *
       100
-    )
-  }, [formik.values.buyingPrice, formik.values.coef])
+    );
+  }, [formik.values.buyingPrice, formik.values.coef]);
 
   const coef = useMemo(() => {
-    return Number(product.sellingPrice) / Number(product.buyingPrice)
-  }, [formik.values.buyingPrice, formik.values.coef])
+    return Number(product.sellingPrice) / Number(product.buyingPrice);
+  }, [formik.values.buyingPrice, formik.values.coef]);
 
   const handleNumberChange = (value: any, input: any) => {
-    formik.setFieldValue(input, value.floatValue)
-  }
+    formik.setFieldValue(input, value.floatValue);
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -85,16 +104,17 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                 <form
                   className="space-y-4"
                   onSubmit={(e) => {
-                    e.preventDefault()
+                    e.preventDefault();
                     mutation.mutate({
                       productId: product.id,
                       name: formik.values.name,
                       buyingPrice: formik.values.buyingPrice,
                       margin,
-                      sellingPrice: formik.values.buyingPrice * formik.values.coef,
+                      sellingPrice:
+                        formik.values.buyingPrice * formik.values.coef,
                       sellingPerUnitPrice: formik.values.sellingPerUnitPrice,
                       sellingPerUnitQty: formik.values.sellingPerUnitQty,
-                    })
+                    });
                   }}
                 >
                   <div className="mt-3 text-center sm:mt-5 space-y-4">
@@ -115,7 +135,6 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                         type="text"
                         id="name"
                         required
-                        
                         value={formik.values.name}
                         onChange={formik.handleChange}
                         className="block p-2  h-10 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -126,14 +145,14 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                         htmlFor="buyingPrice"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Prix d'achât
+                        Prix d&apos;achât
                       </label>
                       <NumericFormat
                         displayType={"input"}
                         value={formik.values.buyingPrice}
                         thousandSeparator={true}
                         onValueChange={(value) => {
-                          formik.setFieldValue("buyingPrice", value.floatValue)
+                          formik.setFieldValue("buyingPrice", value.floatValue);
                         }}
                         allowNegative={false}
                         required
@@ -152,26 +171,26 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                         <span className="inline-flex  items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
                           Coef
                         </span>
-                      
-                  <NumericFormat
-                    displayType="input"
-                    id="coef"
-                    thousandSeparator={true}
-                    value={coef}
-                    allowNegative={false}
-                    onValueChange={(value) => {
-                      handleNumberChange(value, 'coef')
-                    }}
-                    required
-                    className="block p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
+
+                        <NumericFormat
+                          displayType="input"
+                          id="coef"
+                          thousandSeparator={true}
+                          value={coef}
+                          allowNegative={false}
+                          onValueChange={(value) => {
+                            handleNumberChange(value, "coef");
+                          }}
+                          required
+                          className="block p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
                         <span className="inline-flex w-1/3 items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
-                          {numeral(formik.values.buyingPrice * formik.values.coef).format("0,0")}
+                          {numeral(
+                            formik.values.buyingPrice * formik.values.coef
+                          ).format("0,0")}
                         </span>
                         <span className="inline-flex w-1/3 items-center border  border-gray-300 px-3 text-gray-500 sm:text-sm">
-                         {numeral(margin).format("0.0")}
-                         
-                         
+                          {numeral(margin).format("0.0")}
                         </span>
                       </div>
                     </div>
@@ -193,7 +212,10 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                                 value={formik.values.sellingPerUnitPrice}
                                 thousandSeparator={true}
                                 onValueChange={(value) => {
-                                  formik.setFieldValue("sellingPerUnitPrice", value.floatValue)
+                                  formik.setFieldValue(
+                                    "sellingPerUnitPrice",
+                                    value.floatValue
+                                  );
                                 }}
                                 allowNegative={false}
                                 className="p-2 block  h-10 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -213,10 +235,12 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                                 thousandSeparator={true}
                                 allowNegative={false}
                                 onValueChange={(value) => {
-                                  handleNumberChange(value, 'sellingPerUnitQty')
+                                  handleNumberChange(
+                                    value,
+                                    "sellingPerUnitQty"
+                                  );
                                 }}
                                 required
-
                                 name="sellingPerUnitQty"
                                 id="sellingPerUnitQty"
                                 value={formik.values.sellingPerUnitQty}
@@ -228,7 +252,11 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
                       )
                     }
                   </div>
-                  <MutationState mutation={mutation} data={{}} close={() => setOpen(false)} />
+                  <MutationState
+                    mutation={mutation}
+                    data={{}}
+                    close={() => setOpen(false)}
+                  />
                 </form>
               </Dialog.Panel>
             </Transition.Child>
@@ -236,5 +264,5 @@ export default function UpdateWarehouseProduct({open, setOpen}: any) {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

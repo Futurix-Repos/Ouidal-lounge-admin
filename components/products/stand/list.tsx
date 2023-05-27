@@ -1,38 +1,35 @@
-import {useState} from "react"
-import {Menu} from "@headlessui/react"
+import { useState } from "react";
+import { Menu } from "@headlessui/react";
 
-import {useQuery} from "react-query"
-import {fetcher} from "@/helpers"
+import { useQuery } from "react-query";
+import { fetcher } from "@/helpers";
 
-import {useAppDispatch, useAppSelector} from "@/store/hooks"
-import Loading from "@/components/Loading"
-import {MinusCircleIcon, PlusIcon} from "@heroicons/react/24/outline"
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import Loading from "@/components/Loading";
+import { MinusCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
 
-import {setStandProductId} from "@/store/slices/products"
-import IncrementStandStock from "@/components/modals/inc-stand-stock"
-import DecrementStandStock from "@/components/modals/dec-stand-stock"
-import clsx from "clsx"
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ")
-}
+import { setStandProductId } from "@/store/slices/products";
+import IncrementStandStock from "@/components/modals/inc-stand-stock";
+import DecrementStandStock from "@/components/modals/dec-stand-stock";
+import clsx from "clsx";
 
 export default function Products() {
-  const [openIncrement, setOpenIncrement] = useState(false)
-  const [openDecrement, setOpenDecrement] = useState(false)
-  const [openUpdate, setOpenUpdate] = useState(false)
-  const dispatch = useAppDispatch()
-  const productName = useAppSelector((state) => state.products.stand.productName)
-  const standId = useAppSelector((state) => state.products.stand.standId)
-  const categoryId = useAppSelector((state) => state.products.stand.categoryId)
+  const [openIncrement, setOpenIncrement] = useState(false);
+  const [openDecrement, setOpenDecrement] = useState(false);
+  const dispatch = useAppDispatch();
+  const productName = useAppSelector(
+    (state) => state.products.stand.productName
+  );
+  const standId = useAppSelector((state) => state.products.stand.standId);
+  const categoryId = useAppSelector((state) => state.products.stand.categoryId);
 
-  const {isLoading, data: products} = useQuery<any>(
+  const { isLoading, data: products } = useQuery<any>(
     ["selling-products", standId, categoryId, productName],
     () =>
       fetcher(
         `/api/selling-products?standId=${standId}&categoryId=${categoryId}&name=${productName}`
       )
-  )
+  );
 
   return (
     <>
@@ -40,25 +37,31 @@ export default function Products() {
       <DecrementStandStock open={openDecrement} setOpen={setOpenDecrement} />
       {isLoading ? (
         <div className="flex h-screen w-full items-center justify-center">
-        <Loading />
-      </div>
+          <Loading />
+        </div>
       ) : (
         <ul
           role="list"
           className="grid p-4 mt-8 grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"
         >
           {products?.map((product) => (
-            <li key={product.id} className={
-              clsx("overflow-hidden rounded-xl border border-gray-200", product.special && "bg-yellow-50")
-            }>
+            <li
+              key={product.id}
+              className={clsx(
+                "overflow-hidden rounded-xl border border-gray-200",
+                product.special && "bg-yellow-50"
+              )}
+            >
               <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                <div className="text-sm font-medium leading-6 text-gray-900 first-letter:uppercase">{product.name}</div>
+                <div className="text-sm font-medium leading-6 text-gray-900 first-letter:uppercase">
+                  {product.name}
+                </div>
 
                 <Menu as="div" className="relative ml-auto flex space-x-4">
                   <button
                     onClick={() => {
-                      dispatch(setStandProductId(product.productId))
-                      setOpenIncrement(true)
+                      dispatch(setStandProductId(product.productId));
+                      setOpenIncrement(true);
                     }}
                   >
                     <PlusIcon
@@ -68,8 +71,8 @@ export default function Products() {
                   </button>
                   <button
                     onClick={() => {
-                      dispatch(setStandProductId(product.productId))
-                      setOpenDecrement(true)
+                      dispatch(setStandProductId(product.productId));
+                      setOpenDecrement(true);
                     }}
                   >
                     <MinusCircleIcon
@@ -80,12 +83,14 @@ export default function Products() {
                 </Menu>
               </div>
               <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
-               {!product.special ? <div className="flex justify-between gap-x-4 py-3">
-                  <dt className="text-gray-500">Stock</dt>
-                  <dd className="text-gray-700">
-                    {(product.stock / product.contenance).toFixed(2)}
-                  </dd>
-                </div> : null}
+                {!product.special ? (
+                  <div className="flex justify-between gap-x-4 py-3">
+                    <dt className="text-gray-500">Stock</dt>
+                    <dd className="text-gray-700">
+                      {(product.stock / product.contenance).toFixed(2)}
+                    </dd>
+                  </div>
+                ) : null}
 
                 <div className="flex justify-between gap-x-4 py-3">
                   <dt className="text-gray-500">Prix de vente</dt>
@@ -100,10 +105,23 @@ export default function Products() {
                   <>
                     {" "}
                     <div className="flex justify-between gap-x-4 py-3">
+                      <dt className="text-gray-500">Contenance</dt>
+                      <dd className="flex items-start gap-x-2">
+                        <div className="font-medium text-gray-900">
+                          {product.contenance}
+                        </div>
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-x-4 py-3">
                       <dt className="text-gray-500">Quantité conso</dt>
                       <dd className="flex items-start gap-x-2">
                         <div className="font-medium text-gray-900">
-                          {product.sellingPerUnit.qty} {product.sellingPerUnit.unit}
+                          {product.sellingPerUnit.qty}{" "}
+                          {product.sellingPerUnit.unit}
+                          {product.sellingPerUnit.qty >= 1 &&
+                          product.sellingPerUnit?.unit?.length > 2
+                            ? "s"
+                            : ""}
                         </div>
                       </dd>
                     </div>
@@ -128,5 +146,5 @@ export default function Products() {
         </div>
       )}
     </>
-  )
+  );
 }

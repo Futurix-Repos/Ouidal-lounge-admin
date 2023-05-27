@@ -1,9 +1,9 @@
-import {useState} from "react"
-import clsx from "clsx"
+import { useState } from "react";
+import clsx from "clsx";
 
-import {HomeIcon, RectangleStackIcon} from "@heroicons/react/24/outline"
-import Link from "next/link"
-import {useRouter} from "next/router"
+import { HomeIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   ArchiveBoxIcon,
   ArrowLeftOnRectangleIcon,
@@ -12,15 +12,20 @@ import {
   CogIcon,
   PresentationChartLineIcon,
   UserGroupIcon,
-} from "@heroicons/react/20/solid"
-import {signOut} from "next-auth/react"
+} from "@heroicons/react/20/solid";
+import { signOut } from "next-auth/react";
+import Logo from "@/components/logo";
 
 const navigation = [
-  {name: "Equipe", href: "/members", icon: UserGroupIcon},
-  {name: "Tables", href: "/tables", icon: RectangleStackIcon},
-  {name: "Commandes", href: "/orders", icon: CircleStackIcon},
-  {name: "Statistiques ventes", href: "/stats", icon: PresentationChartLineIcon},
-  {name: "Rapports", href: "/tickets", icon: PresentationChartLineIcon},
+  { name: "Equipe", href: "/members", icon: UserGroupIcon },
+  { name: "Tables", href: "/tables", icon: RectangleStackIcon },
+  { name: "Commandes", href: "/orders", icon: CircleStackIcon },
+  {
+    name: "Statistiques ventes",
+    href: "/stats",
+    icon: PresentationChartLineIcon,
+  },
+  { name: "Rapports", href: "/tickets", icon: PresentationChartLineIcon },
   {
     name: "Inventaire des produits",
     icon: BuildingLibraryIcon,
@@ -32,9 +37,9 @@ const navigation = [
     href: "/history",
   },
 
-  {name: "Créer un produit", href: "/product", icon: HomeIcon},
-  {name: "Paramètres", href: "/settings", icon: CogIcon},
-]
+  { name: "Créer un produit", href: "/product", icon: HomeIcon },
+  { name: "Paramètres", href: "/settings", icon: CogIcon },
+];
 
 const NavElement = ({nav}: any) => {
   const router = useRouter()
@@ -105,7 +110,6 @@ const NavElement = ({nav}: any) => {
   )
 }
 export default function Layout({children}: any) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <>
@@ -113,9 +117,11 @@ export default function Layout({children}: any) {
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-[20rem] lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="border flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
-            <div className="flex h-16 shrink-0 items-center"></div>
-            <nav className=" flex-col">
+          <div className="border flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white">
+            <div className="flex mt-1 rounded shadow items-center justify-center shrink-0 ">
+              <Logo w={32} h={32} />
+            </div>
+            <nav className=" flex-col px-6">
               <ul role="list" className="-mx-2 pt-2 space-y-1 overflow-y-auto">
                 {navigation.map((item) => (
                   <NavElement key={item.name} nav={item} />
@@ -124,9 +130,9 @@ export default function Layout({children}: any) {
             </nav>
             <button
               onClick={async () => {
-                await signOut()
+                await signOut();
               }}
-              className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-white bg-green-500 hover:bg-green-700 hover:text-white"
+              className="group flex mx-4 gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-white bg-green-500 hover:bg-green-700 hover:text-white"
             >
               <ArrowLeftOnRectangleIcon
                 className="h-6 w-6 shrink-0  group-hover:text-white"
@@ -142,5 +148,5 @@ export default function Layout({children}: any) {
         </main>
       </div>
     </>
-  )
+  );
 }

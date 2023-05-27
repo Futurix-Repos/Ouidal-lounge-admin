@@ -1,29 +1,32 @@
-import {useQuery} from "react-query"
-import {useState} from "react"
-import {fetcher} from "@/helpers"
-import Loading from "../Loading"
-import {useAppSelector, useAppDispatch} from "@/store/hooks"
-import {setZoneId} from "@/store/slices/zones"
-import AddZone from "../modals/add-zone"
-import DeleteZone from "../modals/delete-zone"
+import { useQuery } from "react-query";
+import { useState } from "react";
+import { fetcher } from "@/helpers";
+import Loading from "../Loading";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setZoneId } from "@/store/slices/zones";
+import AddZone from "../modals/add-zone";
+import DeleteZone from "../modals/delete-zone";
+
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ")
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function SelectZone() {
-  const [openAddZone, setOpenAddZone] = useState(false)
-  const [openDeleteZone, setOpenDeleteZone] = useState(false)
-  const {isLoading, data: zones} = useQuery("zones", () => fetcher("/api/zones"), {
-    onSuccess(zones) {
-      
-      if (zones && !zoneId) {
-        dispatch(setZoneId(zones?.[0]?.id))
-      }
-     
-    },
-  })
-  const dispatch = useAppDispatch()
-  const zoneId = useAppSelector((state) => state.zones.zoneId)
+  const [openAddZone, setOpenAddZone] = useState(false);
+  const [openDeleteZone, setOpenDeleteZone] = useState(false);
+  const { isLoading, data: zones } = useQuery(
+    "zones",
+    () => fetcher("/api/zones"),
+    {
+      onSuccess(zones) {
+        if (zones && !zoneId) {
+          dispatch(setZoneId(zones?.[0]?.id));
+        }
+      },
+    }
+  );
+  const dispatch = useAppDispatch();
+  const zoneId = useAppSelector((state) => state.zones.zoneId);
   return (
     <div>
       <AddZone open={openAddZone} setOpen={setOpenAddZone} />
@@ -67,7 +70,6 @@ export default function SelectZone() {
                     : "text-white bg-slate-700 hover:bg-slate-400",
                   "rounded-md whitespace-nowrap  px-3 py-2 h-16 w-36 text-sm font-medium  hover:text-white overflow-hidden text-ellipsis"
                 )}
-              
               >
                 {zone.name}
               </button>
@@ -78,11 +80,11 @@ export default function SelectZone() {
         {zones && zones.length === 0 ? (
           <div>
             <p className="text-center text-xl font-semibold text-gray-500">
-              Aucune zone n'a été créée
+              Aucune zone
             </p>
           </div>
         ) : null}
       </div>
     </div>
-  )
+  );
 }
