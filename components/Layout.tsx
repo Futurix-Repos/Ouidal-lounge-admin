@@ -14,7 +14,7 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
-import Logo from "@/components/logo";
+import { LogoLayout } from "@/components/logo";
 
 const navigation = [
   { name: "Equipe", href: "/members", icon: UserGroupIcon },
@@ -25,7 +25,11 @@ const navigation = [
     href: "/stats",
     icon: PresentationChartLineIcon,
   },
-  { name: "Rapports", href: "/tickets", icon: PresentationChartLineIcon },
+  {
+    name: "Rapport de caisse",
+    href: "/tickets",
+    icon: PresentationChartLineIcon,
+  },
   {
     name: "Inventaire des produits",
     icon: BuildingLibraryIcon,
@@ -119,7 +123,7 @@ export default function Layout({children}: any) {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="border flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white">
             <div className="flex mt-1 rounded shadow items-center justify-center shrink-0 ">
-              <Logo w={32} h={32} />
+              <LogoLayout />
             </div>
             <nav className=" flex-col px-6">
               <ul role="list" className="-mx-2 pt-2 space-y-1 overflow-y-auto">

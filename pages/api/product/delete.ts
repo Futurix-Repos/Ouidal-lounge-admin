@@ -12,31 +12,37 @@ export default async function handler(
 ) {
   try {
     const client = await clientPromise;
-    const { id } = req.query;
+    const { id, special } = req.query;
     if (!id) {
       return res.status(400).send({ msg: "Missing ID" });
     }
-    const session = client.startSession();
 
-    await session.withTransaction(async () => {
-      try {
-        await client.db().collection("stockProducts").deleteOne(
-          {
-            id,
-          },
-          { session }
-        );
+    if (special) {
+      await client.db().collection("sellingProducts").deleteOne({ id });
+    } else {
+      const session = client.startSession();
 
-        await client.db().collection("sellingProducts").deleteMany(
-          {
-            productId: id,
-          },
-          { session }
-        );
-      } catch (error) {
-        throw error;
-      }
-    });
+      await session.withTransaction(async () => {
+        try {
+          await client.db().collection("stockProducts").deleteOne(
+            {
+              id,
+            },
+            { session }
+          );
+
+          await client.db().collection("sellingProducts").deleteMany(
+            {
+              productId: id,
+            },
+            { session }
+          );
+        } catch (error) {
+          throw error;
+        }
+      });
+    }
+
     res.send({ msg: "ok" });
   } catch (error: any) {
     console.error(error);

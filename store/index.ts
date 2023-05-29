@@ -6,6 +6,7 @@ import ordersReducer from "./slices/orders"
 import statsReducer from "./slices/stats"
 import membersReducer from "./slices/members";
 import ticketsReducer from "./slices/tickets";
+import ingredientsReducer from "./slices/ingredients";
 export let store = configureStore({
   reducer: combineReducers({
     products: productsReducer,
@@ -15,6 +16,7 @@ export let store = configureStore({
     stats: statsReducer,
     members: membersReducer,
     tickets: ticketsReducer,
+    ingredients: ingredientsReducer,
   }),
 });
 

@@ -25,19 +25,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           $regex: standId ? standId : ".*",
           $options: "i",
         },
-        $or: [{deStock: true}, {special: true}],
+        $or: [{ deStock: true }, { special: true }, { bundle: true }],
       })
-      .toArray()
-    const map = new Map()
+      .toArray();
+    const map = new Map();
     products.forEach((product) => {
       if (product.stock) {
         map.set(product.name, product);
       } else {
-        map.set(product.name, { ...product, name: product.name + " Conso" });
+        map.set(product.name, { ...product, name: product.name });
       }
     });
 
-    products = Array.from(map.values())
+    products = Array.from(map.values());
     res.send(products)
   } catch (error: any) {
     console.error(error)

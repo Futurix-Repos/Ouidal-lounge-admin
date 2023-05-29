@@ -14,8 +14,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const matchFilter = {}
     
     if (standId) {
-      const stand = await client.db().collection('stands').findOne({id: standId})
-      matchFilter["stand"] = stand?.name
+      const stand = await client
+        .db()
+        .collection("stands")
+        .findOne({ id: standId });
+      
+      matchFilter["stand"] = stand?.name;
     }
     if (!date) {
     } else {

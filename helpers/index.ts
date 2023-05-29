@@ -5,35 +5,24 @@ export const fetcher = async (url: string) => {
   return res.data;
 };
 
-//function to extract the year date and month from a date string
-
-export const updateStock = async ({
-  client,
-  items,
+const updateStockForBundleProduct = async ({
+  ingredients,
+  standId,
   session,
-}: {
-  client: any;
-  items: any[];
-  session: any;
+  client,
+  quantity,
 }) => {
-  for (const item of items) {
-    if (item.special) continue;
-    console.log(item);
-    const product = await client.db().collection("sellingProducts").findOne(
-      {
-        productId: item.productId,
-        deStock: true,
-      },
-      { session }
-    );
+  for (const ingredient of ingredients) {
+    const product = await client.db().collection("sellingProducts").findOne({
+      productId: ingredient.id,
+      standId,
+      deStock: true,
+    });
 
     if (!product) {
-      throw new Error(`${item.name} n'existe pas dans l'entrepôt`);
+      throw new Error(`${ingredient.name} n'existe pas dans l'entrepôt`);
     }
-
-    let totalToRestock = item.deStock
-      ? item.qty * item.contenance
-      : item.qty * item.sellingPerUnit.qty;
+    const totalToRestock = ingredient.qty * quantity;
 
     await client
       .db()
@@ -49,6 +38,61 @@ export const updateStock = async ({
         },
         { session }
       );
+  }
+};
+
+export const updateStock = async ({
+  client,
+  items,
+  session,
+}: {
+  client: any;
+  items: any[];
+  session: any;
+}) => {
+  for (const item of items) {
+    if (item.special) continue;
+
+    const product = await client.db().collection("sellingProducts").findOne(
+      {
+        productId: item.productId,
+        deStock: true,
+      },
+      { session }
+    );
+
+    if (!product) {
+      throw new Error(`${item.name} n'existe pas dans l'entrepôt`);
+    }
+
+    if (product.bundle) {
+      await updateStockForBundleProduct({
+        ingredients: item.ingredients,
+        standId: item.standId,
+        session,
+        client,
+        quantity: item.qty,
+      });
+    } else {
+      let totalToRestock = item.deStock
+        ? item.qty * item.contenance
+        : item.qty * item.sellingPerUnit.qty;
+
+      await client
+        .db()
+        .collection("sellingProducts")
+        .updateOne(
+          {
+            id: product.id,
+          },
+          {
+            $inc: {
+              stock: totalToRestock,
+            },
+          },
+          { session }
+        );
+    }
   }
 };
 

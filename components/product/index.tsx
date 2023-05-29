@@ -15,6 +15,12 @@ export default function CreationChoice() {
       >
         PRODUIT PARTICULIER
       </Link>
+      <Link
+        href="/product/bundle"
+        className="col-span-full text-center rounded-md bg-slate-600 p-6 text-sm font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+      >
+        BUNDLE DE PRODUIT
+      </Link>
     </div>
-  )
+  );
 }

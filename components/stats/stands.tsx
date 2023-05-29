@@ -13,76 +13,70 @@ import {
 } from "@/store/slices/stats"
 
 export default function StatsStands() {
-  const [name, setName] = useState("")
-  const [searchByDate, setSearchByDate] = useState(false)
-  const [date, setDate] = useState("")
+  const [name, setName] = useState("");
+  const [searchByDate, setSearchByDate] = useState(false);
+  const [date, setDate] = useState("");
 
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
-  const stand = useAppSelector((state) => state.stats.perStand.standId)
-  const productName = useAppSelector((state) => state.stats.perStand.productName)
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const stand = useAppSelector((state) => state.stats.perStand.standId);
+  const productName = useAppSelector(
+    (state) => state.stats.perStand.productName
+  );
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const refreshDate = () => {
-    setDate("")
-    setStartDate("")
-    setEndDate("")
-    setName("")
-  }
+    setDate("");
+    setStartDate("");
+    setEndDate("");
+    setName("");
+  };
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setPerStandProductName(name))
-    }, 1000)
+      dispatch(setPerStandProductName(name));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [name])
+      clearTimeout(tid);
+    };
+  }, [name]);
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setPerStandIntervalEnd(endDate))
-    }, 1000)
+      dispatch(setPerStandIntervalEnd(endDate));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [startDate])
+      clearTimeout(tid);
+    };
+  }, [startDate]);
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setPerStandIntervalStart(startDate))
-    }, 1000)
+      dispatch(setPerStandIntervalStart(startDate));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [startDate])
+      clearTimeout(tid);
+    };
+  }, [startDate]);
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setPerStandDate(date))
-    }, 1000)
+      dispatch(setPerStandDate(date));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [date])
-  const {data: products, isLoading} = useQuery(
+      clearTimeout(tid);
+    };
+  }, [date]);
+  const { data: products } = useQuery(
     ["stats-products", date, startDate, endDate, stand, productName],
     () =>
       fetcher(
         `/api/stats/stands?date=${date}&startDate=${startDate}&endDate=${endDate}&stand=${stand}&productName=${productName}`
       )
-  )
-  const {data: stands, isLoading: standsIsLoading} = useQuery(
-    "stands",
-    () => fetcher("/api/stands"),
-    {
-      onSuccess: (stands) => {
-        if (stands && stands.length) {
-          dispatch(setPerStandStandId(stands[0].id))
-        }
-      },
-    }
-  )
+  );
+  const { data: stands, isLoading: standsIsLoading } = useQuery("stands", () =>
+    fetcher("/api/stands")
+  );
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <Link
@@ -122,7 +116,10 @@ export default function StatsStands() {
             />
           </div>
           <div className="ml-3 text-sm leading-6">
-            <label htmlFor="searchByInterval" className="font-medium text-gray-900">
+            <label
+              htmlFor="searchByInterval"
+              className="font-medium text-gray-900"
+            >
               Rechercher par intervalle de temps
             </label>{" "}
           </div>
@@ -136,7 +133,10 @@ export default function StatsStands() {
       </div>
       <div className="mt-4 w-full flex space-x-12 p-2 border items-center">
         <div className="relative w-1/3 flex flex-col items-start">
-          <label htmlFor="searchByDate" className="font-medium text-sm text-gray-900">
+          <label
+            htmlFor="searchByDate"
+            className="font-medium text-sm text-gray-900"
+          >
             Nom de produit
           </label>
           <input
@@ -145,7 +145,7 @@ export default function StatsStands() {
             id="name"
             value={name}
             onChange={(e) => {
-              setName(e.target.value)
+              setName(e.target.value);
             }}
             className="block w-full h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="Nom de produit"
@@ -162,8 +162,9 @@ export default function StatsStands() {
             onChange={(e) => dispatch(setPerStandStandId(e.target.value))}
             className=" border p-2 block w-full rounded-md h-12 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
           >
+            <option value="">Tous les points de vente</option>
             {stands?.map((stand) => (
-              <option key={stand.id} value={stand.name}>
+              <option key={stand.id} value={stand.id}>
                 {stand.name}
               </option>
             ))}
@@ -179,7 +180,7 @@ export default function StatsStands() {
               className="block w-full h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               value={date}
               onChange={(e) => {
-                setDate(e.target.value)
+                setDate(e.target.value);
               }}
             />
           </div>
@@ -195,7 +196,7 @@ export default function StatsStands() {
                 className="block w-full  h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={startDate}
                 onChange={(e) => {
-                  setStartDate(e.target.value)
+                  setStartDate(e.target.value);
                 }}
               />
             </div>
@@ -207,7 +208,7 @@ export default function StatsStands() {
                 className="block  h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={endDate}
                 onChange={(e) => {
-                  setEndDate(e.target.value)
+                  setEndDate(e.target.value);
                 }}
               />
             </div>
@@ -242,7 +243,9 @@ export default function StatsStands() {
                       <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
                         {product.name}
                       </td>
-                      <td className="whitespace-nowrap p-4 text-sm text-gray-500">{product.qty}</td>
+                      <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+                        {product.qty}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -254,5 +257,5 @@ export default function StatsStands() {
         </div>
       </div>
     </div>
-  )
+  );
 }
