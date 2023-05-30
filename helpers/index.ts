@@ -51,21 +51,12 @@ export const updateStock = async ({
   session: any;
 }) => {
   for (const item of items) {
+  
     if (item.special) continue;
 
-    const product = await client.db().collection("sellingProducts").findOne(
-      {
-        productId: item.productId,
-        deStock: true,
-      },
-      { session }
-    );
+    
 
-    if (!product) {
-      throw new Error(`${item.name} n'existe pas dans l'entrepôt`);
-    }
-
-    if (product.bundle) {
+    if (item.bundle) {
       await updateStockForBundleProduct({
         ingredients: item.ingredients,
         standId: item.standId,
@@ -74,6 +65,17 @@ export const updateStock = async ({
         quantity: item.qty,
       });
     } else {
+      const product = await client.db().collection("sellingProducts").findOne(
+        {
+          productId: item.productId,
+          deStock: true,   
+        },
+        { session }
+      );
+  
+      if (!product) {
+        throw new Error(`${item.name} n'existe pas dans l'entrepôt`);
+      }
       let totalToRestock = item.deStock
         ? item.qty * item.contenance
         : item.qty * item.sellingPerUnit.qty;
@@ -103,11 +105,11 @@ export const printTicket = async () => {
 export function translateStatusToFrench(status) {
   switch (status.toLowerCase()) {
     case "success":
-      return "succès";
+      return "Payée";
     case "canceled":
-      return "annulé";
+      return "Annulée";
     case "pending":
-      return "en attente";
+      return "En attente";
     default:
       return "unknown";
   }

@@ -63,21 +63,21 @@ export default function CancelOrder({open, setOpen, order}: any) {
                       >
                         Annuler la commande
                       </Dialog.Title>
-                      <div className="mt-2 border flex space-y-2 flex-col justify-start items-start">
+                      <div className="mt-5 flex space-y-2 flex-col justify-start items-start">
                         <Field
                           type="text"
                           name="reason"
                           required
-                          className="h-8 w-full border rounded-md"
+                          className=" p-2 w-full border rounded-md"
                           placeholder="Motif d'annulation"
                         />
                       </div>
                     </div>
                     {isIdle && (
-                      <div className="flex items-center justify-start  space-x-2">
+                      <div className="flex w-full items-center  space-x-2">
                         <button
                           type="submit"
-                          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          className="rounded-md w-1/2 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
                           Valider
                         </button>
@@ -86,7 +86,7 @@ export default function CancelOrder({open, setOpen, order}: any) {
                           onClick={() => {
                             setOpen(false)
                           }}
-                          className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                          className="rounded-md w-1/2 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         >
                           Annuler
                         </button>
