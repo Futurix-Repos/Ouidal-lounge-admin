@@ -149,7 +149,7 @@ export default function Products() {
                   <dt className="text-gray-500">Prix de vente</dt>
                   <dd className="flex items-start gap-x-2">
                     <div className="font-medium text-gray-900">
-                      {product.price.toLocaleString()} FCFA
+                      {Number(product.price).toLocaleString()} FCFA
                     </div>
                   </dd>
                 </div>
@@ -165,10 +165,17 @@ export default function Products() {
                         </div>
                       </dd>
                     </div>
-                    <ul className={"list-disc pl-8 text-gray-500"}>
+                    <ul
+                      className={
+                        "list-disc pl-8 h-32 overflow-auto text-gray-500"
+                      }
+                    >
                       {product.ingredients.map((ingredient) => (
                         <li key={ingredient.id}>
                           {ingredient.name} : {ingredient.qty} {ingredient.unit}
+                          {ingredient.unit.length > 2 && ingredient.qty > 1
+                            ? "s"
+                            : ""}
                         </li>
                       ))}
                     </ul>

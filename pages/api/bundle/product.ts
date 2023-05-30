@@ -55,7 +55,7 @@ export default async function handler(
           standId,
           categoryId,
           name: name.toLowerCase(),
-          price: sellingPrice,
+          price: Number(sellingPrice),
           deStock: false,
           special: false,
           bundle: true,

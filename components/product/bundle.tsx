@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import Ingredients from "@/components/modals/ingredients";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openSelection, resetIngredients } from "@/store/slices/ingredients";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default function ProductBundle() {
   const router = useRouter();
@@ -34,9 +35,12 @@ export default function ProductBundle() {
       sellingPerUnitQty: 0,
       quantity: 0,
       cookingPlace: "bar",
-      ingredients: [],
     },
     onSubmit: (values) => {
+      if (!ingredients.length) {
+        alert("Veuillez ajouter au moins un ingrédient.");
+        return;
+      }
       if (values.stands.length === 0) {
         alert("Veuillez sélectionner au moins un point de vente.");
         return;
@@ -419,32 +423,34 @@ export default function ProductBundle() {
               <div className="border rounded-sm shadow-md col-span-3 flex flex-col items-start p-4 ">
                 <button
                   onClick={() => dispatch(openSelection())}
-                  className="border rounded-md p-2 hover:bg-amber-900 hover:text-white text-white bg-amber-800 uppercase font-bold mb-6 leading-6 "
+                  className="flex items-center justify-center  rounded-md p-2 hover:bg-amber-900 hover:text-white text-white bg-amber-800 uppercase font-bold mb-6 leading-6 "
                 >
-                  INGREDIENTS
+                  <span>INGREDIENTS</span>
+                  <PlusIcon className="h-4 w-4 ml-2" />
                 </button>
-                <div className="border w-full divide-y divide-gray-200 border-b border-t border-gray-200 h-72 overflow-auto">
-                  {ingredients.map((ingredient: any, ingredientIdx) => (
-                    <div
-                      key={ingredientIdx}
-                      className="relative flex items-start justify-between p-2"
-                    >
-                      <div className=" text-sm leading-6 flex items-center justify-start space-x-6 w-full">
-                        <p className="w-44 pl-4  text-start select-none font-medium text-gray-900 first-letter:uppercase">
-                          {ingredient.name}
-                        </p>
-                        <ArrowRightIcon className="h-4 w-4 text-gray-500" />
-                        <p className="select-none font-medium text-gray-900">
-                          {ingredient.qty} {ingredient.unit}
-                          {ingredient.qty > 1 && ingredient.unit.length > 2
-                            ? "s"
-                            : ""}
-                        </p>
+                {ingredients.length ? (
+                  <div className="border w-full divide-y divide-gray-200 border-b border-t border-gray-200 h-72 overflow-auto">
+                    {ingredients.map((ingredient: any, ingredientIdx) => (
+                      <div
+                        key={ingredientIdx}
+                        className="relative flex items-start justify-between p-2"
+                      >
+                        <div className=" text-sm leading-6 flex items-center justify-start space-x-6 w-full">
+                          <p className="w-44 pl-4  text-start select-none font-medium text-gray-900 first-letter:uppercase">
+                            {ingredient.name}
+                          </p>
+                          <ArrowRightIcon className="h-4 w-4 text-gray-500" />
+                          <p className="select-none font-medium text-gray-900">
+                            {ingredient.qty} {ingredient.unit}
+                            {ingredient.qty > 1 && ingredient.unit.length > 2
+                              ? "s"
+                              : ""}
+                          </p>
+                        </div>
                       </div>
-                      <div className="ml-3 flex h-6 items-center"></div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

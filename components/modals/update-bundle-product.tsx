@@ -8,7 +8,7 @@ import axios from "axios";
 import { queryClient } from "@/pages/_app";
 
 export default function UpdateBundleProduct({ open, setOpen, product }) {
-  const { data: ingredients, isLoading } = useQuery({
+  const { data: ingredients } = useQuery({
     queryKey: ["selling-products"],
     queryFn: () => fetcher(`/api/ingredients`),
   });
@@ -18,7 +18,6 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
     mutationFn: (values: any) => axios.put(`/api/bundle/product`, values),
     onSuccess: () => {
       queryClient.invalidateQueries(["selling-products"]);
-      setOpen(false);
     },
   });
   return (
@@ -67,7 +66,6 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
                           ...values,
                           productId: product.id,
                         });
-                        setOpen(false);
                       }}
                       onReset={() => {
                         setOpen(false);
@@ -76,24 +74,38 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
                     >
                       {({ values }) => (
                         <Form className="mt-2">
-                          <div className="text-sm text-gray-500">
-                            <div>
-                              <label>NOM DU PRODUIT</label>
+                          <div className="space-y-4 text-gray-900">
+                            <div
+                              className={
+                                "flex flex-col items-start justify-center"
+                              }
+                            >
+                              <label className={"text-sm"}>
+                                NOM DU PRODUIT
+                              </label>
                               <Field
                                 name={"name"}
                                 type="text"
-                                className="border border-gray-300 rounded-md w-full"
+                                className="border p-2 border-gray-300 rounded-md w-full"
                               />
                             </div>
-                            <div>
-                              <label>PRIX DE VENTE</label>
+                            <div
+                              className={
+                                "flex flex-col items-start justify-center"
+                              }
+                            >
+                              <label className={"text-sm"}>PRIX DE VENTE</label>
                               <Field
                                 name={"price"}
                                 type="text"
-                                className="border border-gray-300 rounded-md w-full"
+                                className="border p-2 border-gray-300 rounded-md w-full"
                               />
                             </div>
-                            <div>
+                            <div
+                              className={
+                                "flex flex-col items-start justify-center"
+                              }
+                            >
                               <label>INGREDIENTS</label>
 
                               <FieldArray
@@ -102,6 +114,7 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
                                   <>
                                     <select
                                       onChange={(e) => {
+                                        if (!e.target.value) return;
                                         const _ingredient = ingredients.find(
                                           (ingredient) =>
                                             ingredient.name === e.target.value
@@ -122,9 +135,10 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
                                         }
                                       }}
                                       className={
-                                        "w-full border border-gray-300 p-2"
+                                        "w-full border border-gray-300 p-2 my-2"
                                       }
                                     >
+                                      <option value={""}></option>
                                       {ingredients?.map((ingredient) => (
                                         <option
                                           key={ingredient.id}
@@ -134,7 +148,11 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
                                         </option>
                                       ))}
                                     </select>
-                                    <div className={"h-72 overflow-auto"}>
+                                    <div
+                                      className={
+                                        "h-48 border overflow-auto w-full"
+                                      }
+                                    >
                                       {values.ingredients.map(
                                         (ingredient, index) => {
                                           return (
@@ -227,12 +245,11 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
                               />
                             </div>
                           </div>
-                          <div className="mt-5 sm:mt-6">
+                          <div className="mt-2">
                             {mutation.isIdle && (
                               <button
                                 type="submit"
                                 className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                onClick={() => setOpen(false)}
                               >
                                 Valider
                               </button>
@@ -240,9 +257,15 @@ export default function UpdateBundleProduct({ open, setOpen, product }) {
                             {mutation.isLoading && (
                               <div
                                 className={
-                                  "rounded-full p-2 border border-t-blue-500 w-5 h-5 animate-spin"
+                                  "w-full flex items-center justify-center"
                                 }
-                              />
+                              >
+                                <div
+                                  className={
+                                    "rounded-full p-2 border border-t-blue-500 w-6 h-6 animate-spin"
+                                  }
+                                />
+                              </div>
                             )}
                             {mutation.isSuccess && (
                               <button
