@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const printServeurUrl = "http://localhost:8000";
 export const fetcher = async (url: string) => {
   const res = await axios.post(url);
   return res.data;

@@ -1,9 +1,11 @@
+import { printTicket } from "@/helpers"
 import clsx from "clsx"
 import {useMutation} from "react-query"
 
-function TicketItems({items, startDate, closeDate}: any) {
+function TicketItems({items, startDate, closeDate, paymentMethods,total}: any) {
   const mutation = useMutation({
     mutationFn: async (ticket: any) => {
+      await printTicket(ticket)
     },
   })
   return (
@@ -21,12 +23,29 @@ function TicketItems({items, startDate, closeDate}: any) {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button
+
+
+          {
+            mutation.isSuccess && <button
+    
+            onClick={() => mutation.reset()}
+            className={clsx(
+            "bg-green-600" ,
+              "flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm    ")}
+          >Imprimé!</button>
+          }
+        { mutation.isIdle &&  <button
             type="button"
-            className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={() => mutation.mutate({items, startDate, closeDate,paymentMethods,total})}
+            className={clsx(
+              mutation.isSuccess ? "bg-green-600" : "bg-indigo-600",
+              "flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm    ")}
           >
-            Imprimer
-          </button>
+           <span>Imprimer</span> 
+      
+         
+          </button>}
+          {mutation.isLoading && <div className="flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm bg-indigo-600   "><p className="animate-spin  p-2 w-5 h-5 rounded-full border border-t-white border-black"/></div> }
         </div>
       </div>
       <div className="-mx-4 mt-8 flow-root sm:mx-0 border rounded-md h-72 overflow-y-auto p-2">
@@ -160,7 +179,7 @@ function TicketPayments({payments, total}: any) {
 export default function FullTicket({startDate, closeDate, items, payments, total}: any) {
   return (
     <div className="flex flex-col space-y-4">
-      <TicketItems items={items} startDate={startDate} closeDate={closeDate} />
+      <TicketItems items={items} startDate={startDate} closeDate={closeDate}  paymentMethods={payments} total={total} />
       <TicketPayments payments={payments} total={total} />
     </div>
   )
