@@ -79,7 +79,7 @@ export default function Tickets() {
       <TicketsFilter />
       <button
         className={clsx(
-          isFetching ? "bg-gray-200 animate-pulse" : "bg-green-600",
+          isFetching ? "bg-gray-200 animate-pulse" : "bg-amber-600",
           "border p-2 ml-8 rounded-md flex items-center space-x-2 justify-center text-white"
         )}
         onClick={() => dispatch(toggleTicketFilter())}
@@ -124,7 +124,7 @@ export default function Tickets() {
                         className={clsx(
                           "h-1.5 w-1.5 ",
                           ticketId === ticket._id
-                            ? "fill-green-600"
+                            ? "fill-amber-600"
                             : "fill-gray-300"
                         )}
                         viewBox="0 0 6 6"

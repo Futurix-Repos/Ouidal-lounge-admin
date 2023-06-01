@@ -12,74 +12,77 @@ import {
 } from "@/store/slices/stats"
 import {useReactToPrint} from "react-to-print"
 export default function StatsProducts() {
-  const componentToPrint = useRef(null)
+  const componentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => componentToPrint.current,
-    documentTitle: "Statistique de vente des produits" + " " + new Date().toLocaleDateString(),
-    bodyClass:"p-4"
-  })
-  const [searchByDate, setSearchByDate] = useState(false)
-  const [date, setDate] = useState("")
-  const [name, setName] = useState("")
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
-  const productName = useAppSelector((state) => state.stats.global.productName)
-  const dispatch = useAppDispatch()
+    documentTitle:
+      "Statistique de vente des produits" +
+      " " +
+      new Date().toLocaleDateString(),
+    bodyClass: "p-4",
+  });
+  const [searchByDate, setSearchByDate] = useState(false);
+  const [date, setDate] = useState("");
+  const [name, setName] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const productName = useAppSelector((state) => state.stats.global.productName);
+  const dispatch = useAppDispatch();
   const refreshDate = () => {
-    setDate("")
-    setStartDate("")
-    setEndDate("")
-    setName("")
-  }
+    setDate("");
+    setStartDate("");
+    setEndDate("");
+    setName("");
+  };
 
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setGlobalProductName(name))
-    }, 1000)
+      dispatch(setGlobalProductName(name));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [name])
+      clearTimeout(tid);
+    };
+  }, [name]);
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setGlobalIntervalEnd(endDate))
-    }, 1000)
+      dispatch(setGlobalIntervalEnd(endDate));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [startDate])
+      clearTimeout(tid);
+    };
+  }, [startDate]);
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setGlobalIntervalStart(startDate))
-    }, 1000)
+      dispatch(setGlobalIntervalStart(startDate));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [startDate])
+      clearTimeout(tid);
+    };
+  }, [startDate]);
   useEffect(() => {
     let tid = setTimeout(() => {
-      dispatch(setGlobalDate(date))
-    }, 1000)
+      dispatch(setGlobalDate(date));
+    }, 1000);
 
     return () => {
-      clearTimeout(tid)
-    }
-  }, [date])
-  const {data: products, isLoading} = useQuery(
+      clearTimeout(tid);
+    };
+  }, [date]);
+  const { data: products, isLoading } = useQuery(
     ["stats-products", date, startDate, endDate, productName],
     () =>
       fetcher(
         `/api/stats/products?date=${date}&startDate=${startDate}&endDate=${endDate}&productName=${productName}`
       )
-  )
+  );
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <Link
         href="/stats"
-        className="inline-flex mb-12 items-center gap-x-2 rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+        className="inline-flex mb-12 items-center gap-x-2 rounded-md bg-amber-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
       >
         <ArrowLeftIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
         Retour à la selection
@@ -114,7 +117,10 @@ export default function StatsProducts() {
             />
           </div>
           <div className="ml-3 text-sm leading-6">
-            <label htmlFor="searchByInterval" className="font-medium text-gray-900">
+            <label
+              htmlFor="searchByInterval"
+              className="font-medium text-gray-900"
+            >
               Rechercher par intervalle de temps
             </label>{" "}
           </div>
@@ -126,7 +132,7 @@ export default function StatsProducts() {
             id="name"
             value={name}
             onChange={(e) => {
-              setName(e.target.value)
+              setName(e.target.value);
             }}
             className="block w-full h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="Nom de produit"
@@ -150,7 +156,7 @@ export default function StatsProducts() {
               className="block w-1/3 h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               value={date}
               onChange={(e) => {
-                setDate(e.target.value)
+                setDate(e.target.value);
               }}
             />
           </div>
@@ -166,7 +172,7 @@ export default function StatsProducts() {
                 className="block  h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={startDate}
                 onChange={(e) => {
-                  setStartDate(e.target.value)
+                  setStartDate(e.target.value);
                 }}
               />
             </div>
@@ -178,7 +184,7 @@ export default function StatsProducts() {
                 className="block  h-12 border p-2 rounded-md  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={endDate}
                 onChange={(e) => {
-                  setEndDate(e.target.value)
+                  setEndDate(e.target.value);
                 }}
               />
             </div>
@@ -186,7 +192,7 @@ export default function StatsProducts() {
         )}
         <button
           onClick={() => handlePrint()}
-          className="border rounded p-2 mt-2 hover:bg-slate-200"
+          className="border rounded p-2 mt-2 hover:bg-amber-500-200 bg-amber-700 text-white"
         >
           Imprimer
         </button>
@@ -196,7 +202,10 @@ export default function StatsProducts() {
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             {products?.length > 0 ? (
-              <table ref={componentToPrint} className="min-w-full divide-y divide-gray-300">
+              <table
+                ref={componentToPrint}
+                className="min-w-full divide-y divide-gray-300"
+              >
                 <thead>
                   <tr className="divide-x divide-gray-200">
                     <th
@@ -219,7 +228,9 @@ export default function StatsProducts() {
                       <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
                         {product.name}
                       </td>
-                      <td className="whitespace-nowrap p-4 text-sm text-gray-500">{product.qty}</td>
+                      <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+                        {product.qty}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -231,5 +242,5 @@ export default function StatsProducts() {
         </div>
       </div>
     </div>
-  )
+  );
 }

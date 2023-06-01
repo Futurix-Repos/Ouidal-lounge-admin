@@ -12,7 +12,9 @@ function TicketItems({items, startDate, closeDate, paymentMethods,total}: any) {
     <div className="px-4 sm:px-6 lg:px-8 mt-10">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 text-gray-900">TicketZ</h1>
+          <h1 className="text-base font-semibold leading-6 text-gray-900">
+            TicketZ
+          </h1>
           <p className="mt-2 text-sm text-gray-700">
             <span className="font-bold">Ouverture </span>
             <time>{startDate}</time>
@@ -23,29 +25,42 @@ function TicketItems({items, startDate, closeDate, paymentMethods,total}: any) {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-
-
-          {
-            mutation.isSuccess && <button
-    
-            onClick={() => mutation.reset()}
-            className={clsx(
-            "bg-green-600" ,
-              "flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm    ")}
-          >Imprimé!</button>
-          }
-        { mutation.isIdle &&  <button
-            type="button"
-            onClick={() => mutation.mutate({items, startDate, closeDate,paymentMethods,total})}
-            className={clsx(
-              mutation.isSuccess ? "bg-green-600" : "bg-indigo-600",
-              "flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm    ")}
-          >
-           <span>Imprimer</span> 
-      
-         
-          </button>}
-          {mutation.isLoading && <div className="flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm bg-indigo-600   "><p className="animate-spin  p-2 w-5 h-5 rounded-full border border-t-white border-black"/></div> }
+          {mutation.isSuccess && (
+            <button
+              onClick={() => mutation.reset()}
+              className={clsx(
+                "bg-amber-600",
+                "flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm    "
+              )}
+            >
+              Imprimé!
+            </button>
+          )}
+          {mutation.isIdle && (
+            <button
+              type="button"
+              onClick={() =>
+                mutation.mutate({
+                  items,
+                  startDate,
+                  closeDate,
+                  paymentMethods,
+                  total,
+                })
+              }
+              className={clsx(
+                mutation.isSuccess ? "bg-amber-600" : "bg-indigo-600",
+                "flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm    "
+              )}
+            >
+              <span>Imprimer</span>
+            </button>
+          )}
+          {mutation.isLoading && (
+            <div className="flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm bg-indigo-600   ">
+              <p className="animate-spin  p-2 w-5 h-5 rounded-full border border-t-white border-black" />
+            </div>
+          )}
         </div>
       </div>
       <div className="-mx-4 mt-8 flow-root sm:mx-0 border rounded-md h-72 overflow-y-auto p-2">
@@ -86,12 +101,22 @@ function TicketItems({items, startDate, closeDate, paymentMethods,total}: any) {
           </thead>
           <tbody>
             {items.map((item, index) => (
-              <tr key={item.id} className={clsx("border-gray-200", index == items.length - 1 ? "border-b-0" : "border-b")}>
+              <tr
+                key={item.id}
+                className={clsx(
+                  "border-gray-200",
+                  index == items.length - 1 ? "border-b-0" : "border-b"
+                )}
+              >
                 <td className="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
-                  <div className="font-medium text-gray-900 first-letter:uppercase">{item.name}</div>
+                  <div className="font-medium text-gray-900 first-letter:uppercase">
+                    {item.name}
+                  </div>
                 </td>
                 <td className="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
-                  <div className="mt-1 truncate text-gray-500 text-center ">{item.quantity}</div>
+                  <div className="mt-1 truncate text-gray-500 text-center ">
+                    {item.quantity}
+                  </div>
                 </td>
                 <td className="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
                   {item.price.toLocaleString("en-US")}
@@ -105,7 +130,7 @@ function TicketItems({items, startDate, closeDate, paymentMethods,total}: any) {
         </table>
       </div>
     </div>
-  )
+  );
 }
 function TicketPayments({payments, total}: any) {
   return (

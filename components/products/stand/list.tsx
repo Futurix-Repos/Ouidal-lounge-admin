@@ -72,7 +72,7 @@ export default function Products() {
             >
               <div
                 className={clsx(
-                  product.bundle ? " bg-amber-300 text-white" : "text-gray-900",
+                  product.bundle ? " bg-blue-300 text-white" : "text-gray-900",
                   "flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6"
                 )}
               >

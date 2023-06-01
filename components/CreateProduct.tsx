@@ -106,7 +106,10 @@ export default function CreateProduct() {
               </h2>
               {/* Name */}
               <div className="col-span-3 flex flex-col items-start">
-                <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Nom du produit
                 </label>
                 <input
@@ -215,7 +218,7 @@ export default function CreateProduct() {
                   value={formik.values.buyingPrice}
                   thousandSeparator={true}
                   onValueChange={(value) => {
-                    handleNumberChange(value, "buyingPrice")
+                    handleNumberChange(value, "buyingPrice");
                   }}
                   allowNegative={false}
                   required
@@ -239,20 +242,21 @@ export default function CreateProduct() {
                   <NumericFormat
                     displayType="input"
                     id="coef"
-                    
                     thousandSeparator={true}
                     value={formik.values.coef}
                     allowNegative={false}
                     onValueChange={(value) => {
-                      handleNumberChange(value, 'coef')
+                      handleNumberChange(value, "coef");
                     }}
                     required
                     className="block p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   <span className="inline-flex w-1/3 items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
-                    {numeral((formik.values.buyingPrice * formik.values.coef).toFixed(2)).format(
-                      "0,0"
-                    )}
+                    {numeral(
+                      (formik.values.buyingPrice * formik.values.coef).toFixed(
+                        2
+                      )
+                    ).format("0,0")}
                   </span>
                   <span className="inline-flex w-1/3 items-center border  border-gray-300 px-3 text-gray-500 sm:text-sm">
                     {numeral(
@@ -354,7 +358,7 @@ export default function CreateProduct() {
                       value={formik.values.contenance}
                       thousandSeparator={true}
                       onValueChange={(value) => {
-                        handleNumberChange(value, "contenance")
+                        handleNumberChange(value, "contenance");
                       }}
                       allowNegative={false}
                       className="p-2 block  h-10 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -392,7 +396,7 @@ export default function CreateProduct() {
                         value={formik.values.sellingPerUnitPrice}
                         thousandSeparator={true}
                         onValueChange={(value) => {
-                          handleNumberChange(value, "sellingPerUnitPrice")
+                          handleNumberChange(value, "sellingPerUnitPrice");
                         }}
                         allowNegative={false}
                         className="p-2 block  h-10 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -437,7 +441,10 @@ export default function CreateProduct() {
                 </label>
                 <div className="border w-full divide-y divide-gray-200 border-b border-t border-gray-200">
                   {stands.map((stand, standIdx) => (
-                    <div key={standIdx} className="relative flex items-start justify-between p-2">
+                    <div
+                      key={standIdx}
+                      className="relative flex items-start justify-between p-2"
+                    >
                       <div className=" text-sm leading-6">
                         <label
                           htmlFor={`stand-${stand.id}`}
@@ -455,16 +462,22 @@ export default function CreateProduct() {
                           checked={formik.values.stands.includes(stand.id)}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              const standIsAlreadyAdded = formik.values.stands.find(
-                                (s) => s === stand.id
-                              )
-                              if (standIsAlreadyAdded) return
-                              formik.setFieldValue("stands", [...formik.values.stands, stand.id])
+                              const standIsAlreadyAdded =
+                                formik.values.stands.find(
+                                  (s) => s === stand.id
+                                );
+                              if (standIsAlreadyAdded) return;
+                              formik.setFieldValue("stands", [
+                                ...formik.values.stands,
+                                stand.id,
+                              ]);
                             } else {
                               formik.setFieldValue(
                                 "stands",
-                                formik.values.stands.filter((s) => s !== stand.id)
-                              )
+                                formik.values.stands.filter(
+                                  (s) => s !== stand.id
+                                )
+                              );
                             }
                           }}
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
@@ -480,13 +493,13 @@ export default function CreateProduct() {
         {mutation.isIdle && (
           <button
             type="submit"
-            className="w-1/2 mt-6 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="w-1/2 mt-6 rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Enrégistrer
           </button>
         )}
         {mutation.isLoading && (
-          <div className="w-1/2 animate-pulse mt-6 flex items-center justify-center space-x-2 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  ">
+          <div className="w-1/2 animate-pulse mt-6 flex items-center justify-center space-x-2 rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  ">
             <span>Enrégistrement en cours</span>
           </div>
         )}
@@ -498,10 +511,12 @@ export default function CreateProduct() {
             >
               Cliquer pour réessayer
             </button>
-            <p className="p-2">Une erreur est survenue {mutation.error?.response?.data?.msg}</p>
+            <p className="p-2">
+              Une erreur est survenue {mutation.error?.response?.data?.msg}
+            </p>
           </div>
         )}
       </div>
     </form>
-  )
+  );
 }

@@ -1,18 +1,28 @@
-import {useState, useEffect} from "react"
-import {fetcher} from "@/helpers"
-import {ArrowLeftIcon, ArrowPathIcon} from "@heroicons/react/20/solid"
-import Link from "next/link"
-import {useQuery} from "react-query"
-import {useAppDispatch, useAppSelector} from "@/store/hooks"
+import { useState, useEffect, useRef } from "react";
+import { fetcher } from "@/helpers";
+import { ArrowLeftIcon, ArrowPathIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
+import { useQuery } from "react-query";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setPerStandDate,
   setPerStandIntervalEnd,
   setPerStandIntervalStart,
   setPerStandProductName,
   setPerStandStandId,
-} from "@/store/slices/stats"
+} from "@/store/slices/stats";
+import { useReactToPrint } from "react-to-print";
 
 export default function StatsStands() {
+  const componentToPrint = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentToPrint.current,
+    documentTitle:
+      "Statistique de vente des produits" +
+      " " +
+      new Date().toLocaleDateString(),
+    bodyClass: "p-4",
+  });
   const [name, setName] = useState("");
   const [searchByDate, setSearchByDate] = useState(false);
   const [date, setDate] = useState("");
@@ -81,7 +91,7 @@ export default function StatsStands() {
     <div className="px-4 sm:px-6 lg:px-8">
       <Link
         href="/stats"
-        className="inline-flex mb-12 items-center gap-x-2 rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+        className="inline-flex mb-12 items-center gap-x-2 rounded-md bg-amber-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
       >
         <ArrowLeftIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
         Retour à la selection
@@ -214,13 +224,22 @@ export default function StatsStands() {
             </div>
           </div>
         )}
+        <button
+          onClick={() => handlePrint()}
+          className="border rounded p-2 mt-2 hover:bg-amber-500 bg-amber-700 text-white"
+        >
+          Imprimer
+        </button>
       </div>
 
       <div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             {products?.length > 0 ? (
-              <table className="min-w-full divide-y divide-gray-300">
+              <table
+                ref={componentToPrint}
+                className="min-w-full divide-y divide-gray-300"
+              >
                 <thead>
                   <tr className="divide-x divide-gray-200">
                     <th

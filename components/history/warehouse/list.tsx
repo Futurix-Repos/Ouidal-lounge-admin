@@ -3,24 +3,30 @@ import {Fragment, useState} from "react"
 import {useQuery} from "react-query"
 import {fetcher} from "@/helpers"
 
-import {useAppDispatch, useAppSelector} from "@/store/hooks"
-import Loading from "@/components/Loading"
+import { useAppSelector } from "@/store/hooks";
+import Loading from "@/components/Loading";
 
-export default function history() {
-  const itemName = useAppSelector((state) => state.history.warehouse.productName)
-  const warehouseId = useAppSelector((state) => state.history.warehouse.warehouseId)
-  const categoryId = useAppSelector((state) => state.history.warehouse.categoryId)
+export default function History() {
+  const itemName = useAppSelector(
+    (state) => state.history.warehouse.productName
+  );
+  const warehouseId = useAppSelector(
+    (state) => state.history.warehouse.warehouseId
+  );
+  const categoryId = useAppSelector(
+    (state) => state.history.warehouse.categoryId
+  );
 
-  const type = useAppSelector((state) => state.history.warehouse.type)
+  const type = useAppSelector((state) => state.history.warehouse.type);
 
-  const date = useAppSelector((state) => state.history.warehouse.date)
-  const {isLoading, data: histories} = useQuery<any>(
+  const date = useAppSelector((state) => state.history.warehouse.date);
+  const { isLoading, data: histories } = useQuery<any>(
     ["stock-history", warehouseId, categoryId, itemName, type, date],
     () =>
       fetcher(
         `/api/history/warehouses?warehouseId=${warehouseId}&categoryId=${categoryId}&itemName=${itemName}&type=${type}&date=${date}`
       )
-  )
+  );
 
   return (
     <>
@@ -104,5 +110,5 @@ export default function history() {
         </div>
       )}
     </>
-  )
+  );
 }

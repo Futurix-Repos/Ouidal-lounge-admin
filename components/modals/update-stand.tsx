@@ -138,7 +138,7 @@ export default function UpdateStand({open, setOpen}: any) {
                             setOpen(false)
                             mutation.reset()
                           }}
-                          className="rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500   "
+                          className="rounded-md bg-amber-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-500   "
                         >
                           Création réussie!
                         </button>

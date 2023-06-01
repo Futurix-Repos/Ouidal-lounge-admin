@@ -98,7 +98,7 @@ export const updateStock = async ({
   }
 };
 
-export const printTicket = async () => {
+export const printTicket = async (ticket) => {
   await axios.post("");
 };
 

@@ -48,8 +48,8 @@ export default function AddStand({open, setOpen}: any) {
                   <div className="mt-3 text-center sm:mt-5">
                     <form
                       onSubmit={(e) => {
-                        e.preventDefault()
-                        mutation.mutate({name})
+                        e.preventDefault();
+                        mutation.mutate({ name });
                       }}
                       className="mt-2 space-y-4"
                     >
@@ -81,8 +81,8 @@ export default function AddStand({open, setOpen}: any) {
                           <button
                             type="button"
                             onClick={() => {
-                              setOpen(false)
-                              mutation.reset()
+                              setOpen(false);
+                              mutation.reset();
                             }}
                             className="w-1/2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 "
                           >
@@ -95,10 +95,10 @@ export default function AddStand({open, setOpen}: any) {
                         <button
                           type="button"
                           onClick={() => {
-                            setOpen(false)
-                            mutation.reset()
+                            setOpen(false);
+                            mutation.reset();
                           }}
-                          className="rounded-md w-full bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500   "
+                          className="rounded-md w-full bg-amber-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-500   "
                         >
                           Création réussie!
                         </button>
@@ -120,5 +120,5 @@ export default function AddStand({open, setOpen}: any) {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

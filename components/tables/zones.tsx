@@ -66,7 +66,7 @@ export default function SelectZone() {
                 onClick={() => dispatch(setZoneId(zone.id))}
                 className={classNames(
                   zone.id === zoneId
-                    ? "bg-green-400 text-white hover:bg-green-600"
+                    ? "bg-amber-400 text-white hover:bg-amber-600"
                     : "text-white bg-slate-700 hover:bg-slate-400",
                   "rounded-md whitespace-nowrap  px-3 py-2 h-16 w-36 text-sm font-medium  hover:text-white overflow-hidden text-ellipsis"
                 )}

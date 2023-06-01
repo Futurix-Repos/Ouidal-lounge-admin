@@ -97,7 +97,7 @@ export default function AddWarehouse({open, setOpen}: any) {
                           onClick={() => {
                             mutation.reset()
                           }}
-                          className="rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500   "
+                          className="rounded-md bg-amber-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-500   "
                         >
                           Création réussie! Ajouter un nouvel entrepôt.
                         </button>

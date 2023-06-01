@@ -27,7 +27,9 @@ export default function MembersList() {
       <DeleteMember open={openDelete} setOpen={setOpenDelete} />
       <AddMember open={openAddMember} setOpen={setOpenAddMember} />
       <div className="border-b mx-10 border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">MEMBRES DE L'EQUIPE</h3>
+        <h3 className="text-base font-semibold leading-6 text-gray-900">
+          MEMBRES DE L'EQUIPE
+        </h3>
         <div className="mt-3 sm:ml-4 sm:mt-0">
           <button
             onClick={() => setOpenAddMember(true)}
@@ -53,7 +55,7 @@ export default function MembersList() {
                   <h3 className="truncate text-sm font-medium text-gray-900 first-letter:uppercase">
                     {member.username}
                   </h3>
-                  <span className="first-letter:uppercase inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                  <span className="first-letter:uppercase inline-flex flex-shrink-0 items-center rounded-full bg-amber-50 px-1.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
                     {member.role}
                     {member.stand ? ` - ${member.stand}` : ""}
                   </span>
@@ -65,12 +67,15 @@ export default function MembersList() {
                 <div className="flex w-0 flex-1">
                   <button
                     onClick={() => {
-                      dispatch(setMemberId(member.id))
-                      setOpen(true)
+                      dispatch(setMemberId(member.id));
+                      setOpen(true);
                     }}
                     className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
-                    <PencilIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <PencilIcon
+                      className="h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
                     Modifier
                   </button>
                 </div>
@@ -78,12 +83,15 @@ export default function MembersList() {
                   <button
                     disabled={member.role === "manager"}
                     onClick={() => {
-                      dispatch(setMemberId(member.id))
-                      setOpenDelete(true)
+                      dispatch(setMemberId(member.id));
+                      setOpenDelete(true);
                     }}
                     className=" disabled:bg-black disabled:text-white relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
-                    <TrashIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <TrashIcon
+                      className="h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
                     Supprimer
                   </button>
                 </div>
@@ -93,5 +101,5 @@ export default function MembersList() {
         ))}
       </ul>
     </div>
-  )
+  );
 }

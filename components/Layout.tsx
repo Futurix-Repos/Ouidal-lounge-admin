@@ -45,9 +45,9 @@ const navigation = [
   { name: "Paramètres", href: "/settings", icon: CogIcon },
 ];
 
-const NavElement = ({nav}: any) => {
-  const router = useRouter()
-  const [open, setOpen] = useState(false)
+const NavElement = ({ nav }: any) => {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   if (nav.items) {
     return (
@@ -63,7 +63,10 @@ const NavElement = ({nav}: any) => {
         >
           <div className="w-full flex items-center justify-between space-x-4 p-2">
             <div className="flex items-center space-x-2">
-              <nav.icon className={clsx("h-6 w-6 shrink-0")} aria-hidden="true" />
+              <nav.icon
+                className={clsx("h-6 w-6 shrink-0")}
+                aria-hidden="true"
+              />
               <p> {nav.name}</p>
             </div>
           </div>
@@ -80,7 +83,7 @@ const NavElement = ({nav}: any) => {
                   key={item.name}
                   className={clsx(
                     router.pathname.endsWith(item.href)
-                      ? "bg-green-400 text-white hover:bg-green-600"
+                      ? "bg-amber-400 text-white hover:bg-amber-800"
                       : "bg-white text-gray-900 hover:bg-gray-100",
                     "border p-2"
                   )}
@@ -92,15 +95,15 @@ const NavElement = ({nav}: any) => {
           ) : null}
         </button>
       </li>
-    )
+    );
   }
   return (
     <li key={nav.name} className="relative">
       <Link
         href={nav.href}
         className={clsx(
-          router.pathname.endsWith(nav.href) ? "bg-green-400 text-white" : "",
-          "w-full border relative flex flex-col rounded-md p-2 text-sm leading-6 font-semibold hover:text-white hover:bg-gray-400"
+          router.pathname.endsWith(nav.href) ? "bg-amber-700 text-white" : "",
+          "w-full border relative flex flex-col rounded-md p-2 text-sm leading-6 font-semibold hover:text-white hover:bg-amber-700"
         )}
       >
         <div className="flex items-center justify-between space-x-4 p-2">
@@ -111,10 +114,9 @@ const NavElement = ({nav}: any) => {
         </div>
       </Link>
     </li>
-  )
-}
-export default function Layout({children}: any) {
-
+  );
+};
+export default function Layout({ children }: any) {
   return (
     <>
       <div>
@@ -136,7 +138,7 @@ export default function Layout({children}: any) {
               onClick={async () => {
                 await signOut();
               }}
-              className="group flex mx-4 gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-white bg-green-500 hover:bg-green-700 hover:text-white"
+              className="group flex mx-4 gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-white bg-amber-500 hover:bg-amber-700 hover:text-white"
             >
               <ArrowLeftOnRectangleIcon
                 className="h-6 w-6 shrink-0  group-hover:text-white"

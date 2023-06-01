@@ -152,7 +152,7 @@ export default function OrdersList() {
                       className={clsx(
                         "h-1.5 w-1.5 ",
                         order.id === currentOrder.id
-                          ? "fill-green-600"
+                          ? "fill-amber-600"
                           : "fill-gray-300"
                       )}
                       viewBox="0 0 6 6"
