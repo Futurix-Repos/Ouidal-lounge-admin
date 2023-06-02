@@ -99,7 +99,7 @@ export const updateStock = async ({
 };
 
 export const printTicket = async (ticket) => {
-  await axios.post("");
+  await axios.post("http://192.168.8.110:8000", ticket);
 };
 
 export function translateStatusToFrench(status) {

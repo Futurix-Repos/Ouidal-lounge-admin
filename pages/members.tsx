@@ -10,4 +10,4 @@ export default function MembersPage() {
   )
 }
 
-MembersPage.auth = true
+//MembersPage.auth = true

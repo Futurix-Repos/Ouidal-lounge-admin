@@ -12,4 +12,4 @@ export default function Warehouses() {
   )
 }
 
-Warehouses.auth = true
+//Warehouses.auth = true

@@ -19,7 +19,9 @@ export const authOptions = {
       },
       //@ts-ignore
       authorize: async (credentials) => {
-        const client = await clientPromise
+        try{
+ const client = await clientPromise
+       
         const user = await client.db().collection("users").findOne({
           username: credentials?.username,
           password: credentials?.password,
@@ -34,6 +36,11 @@ export const authOptions = {
           username: user,
           name: user.id,
         }
+        }catch(error){
+          console.log(error)
+        }
+        
+       
       },
     }),
   ],
