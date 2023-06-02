@@ -12,7 +12,7 @@ export default function DecrementStock({open, setOpen}) {
   const categoryId = useAppSelector((state) => state.products.warehouse.categoryId)
   const productName = useAppSelector((state) => state.products.warehouse.productName)
   const productId = useAppSelector((state) => state.products.warehouse.productId)
-  const [qty, setQty] = useState(0)
+  const [qty, setQty] = useState<any>(0)
   const [reason, setReason] = useState("")
   const mutation = useMutation({
     mutationFn: async (data: any) => {

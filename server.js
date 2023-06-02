@@ -1,7 +1,7 @@
 const {createServer} = require("http");
 const {parse} = require("url");
 const next = require("next");
-const port = 3008;
+const port = 3000;
 
 const app = next({
   dev: false,
