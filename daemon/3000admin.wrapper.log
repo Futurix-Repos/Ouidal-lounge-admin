@@ -1,4 +1,0 @@
-2023-06-02 14:24:00 - Starting C:\Users\OUIDAH-LOUNGE\AppData\Roaming\nvm\v16.20.0\node.exe  --harmony --max_old_space_size=4096 C:\Users\OUIDAH-LOUNGE\Documents\GitHub\Ouidal-lounge-admin\node_modules\node-windows\lib\wrapper.js --file C:\Users\OUIDAH-LOUNGE\Documents\GitHub\Ouidal-lounge-admin\server.js --scriptoptions= --log "3000-ADMIN wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
-2023-06-02 14:24:00 - Started 9496
-2023-06-02 14:30:25 - Starting C:\Users\OUIDAH-LOUNGE\AppData\Roaming\nvm\v16.20.0\node.exe  --harmony --max_old_space_size=4096 C:\Users\OUIDAH-LOUNGE\Documents\GitHub\Ouidal-lounge-admin\node_modules\node-windows\lib\wrapper.js --file C:\Users\OUIDAH-LOUNGE\Documents\GitHub\Ouidal-lounge-admin\server.js --scriptoptions= --log "3000-ADMIN wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
-2023-06-02 14:30:25 - Started 6964
