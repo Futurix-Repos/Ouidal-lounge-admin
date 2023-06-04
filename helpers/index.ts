@@ -1,5 +1,5 @@
 import axios from "axios";
-const printServeurUrl = "http://localhost:8000";
+
 export const fetcher = async (url: string) => {
   const res = await axios.post(url);
   return res.data;
@@ -99,7 +99,11 @@ export const updateStock = async ({
 };
 
 export const printTicket = async (ticket) => {
-  await axios.post("http://192.168.8.110:8000", ticket);
+  const paymentMethods = Object.keys(ticket.paymentMethods).map(paymentName => ({name: paymentName, amount: ticket.paymentMethods[paymentName]}))
+  ticket.paymentMethods = paymentMethods
+  ticket.start = ticket.startDate
+  ticket.end = ticket.closeDate
+  await axios.post("http://192.168.20.14:7000/print-zTicket", {infos:ticket});
 };
 
 export function translateStatusToFrench(status) {

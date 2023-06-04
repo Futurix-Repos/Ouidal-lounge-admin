@@ -25,6 +25,7 @@ export default function CreateProduct() {
       sellingPerUnitQty: "",
       quantity: "",
       cookingPlace: "bar",
+      sellingPrice:0,
     },
     onSubmit: (values) => {
       if (values.stands.length === 0) {
@@ -258,6 +259,18 @@ export default function CreateProduct() {
                       )
                     ).format("0,0")}
                   </span>
+                  <NumericFormat
+                    displayType="input"
+                    id="sellingPrice"
+                    thousandSeparator={true}
+                    value={formik.values.coef}
+                    allowNegative={false}
+                    onValueChange={(value) => {
+                      handleNumberChange(value, "sellingPrice");
+                    }}
+                    required
+                    className="block p-2 h-10 w-[20%]  border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                   <span className="inline-flex w-1/3 items-center border  border-gray-300 px-3 text-gray-500 sm:text-sm">
                     {numeral(
                       (
