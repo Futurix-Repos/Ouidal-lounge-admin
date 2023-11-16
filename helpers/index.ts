@@ -103,7 +103,7 @@ export const printTicket = async (ticket) => {
   ticket.paymentMethods = paymentMethods
   ticket.start = ticket.startDate
   ticket.end = ticket.closeDate
-  await axios.post("http://192.168.20.14:7000/print-zTicket", {infos:ticket});
+  await axios.post("http://192.168.20.15:7000/print-zTicket", {infos:ticket});
 };
 
 export function translateStatusToFrench(status) {
